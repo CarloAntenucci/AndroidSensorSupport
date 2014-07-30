@@ -162,7 +162,7 @@ value (Android Sensor Framework only notify a change, but developers
 cannot request information to the sensor without save the last update
 in a variable).
 
-All source code are available at \href{https://github.com/CarloAntenucci/Android-Sensors-Overview.git}{https://github.com/CarloAntenucci/Android-Sensors-Overview.git}
+All source code are available at \href{https://github.com/CarloAntenucci/AndroidSensorSupport.git}{https://github.com/CarloAntenucci/AndroidSensorSupport.git}
 \newpage{}
 \end{abstract}
 
@@ -1189,7 +1189,7 @@ are, however, sensor simulators that can be used to simulate sensor
 output.
 
 
-\subsubsection*{Don't block the onSensorChanged() method}
+\subsubsection*{Don't block the\texttt{ onSensorChanged() }method}
 
 Android system may call the \texttt{onSensorChanged(SensorEvent)}
 method quite often because sensor data can changes at high rate, hence
@@ -1200,7 +1200,7 @@ If an application requires any data filtering or reduction of sensor
 data, it would be better perform that work outside of the \texttt{onSensorChanged(SensorEvent)}
 method.
 \begin{rem*}
-If the onSensorChange(SensorEvent) contains a loop the application
+If the \texttt{onSensorChange(SensorEvent)} contains a loop the application
 is stopped by the system.
 \end{rem*}
 
@@ -1215,12 +1215,12 @@ constant.
 
 \subsubsection*{Choose sensor delay carefully}
 
-The registerListener() method requires, in addiction to the listener
-and the sensor, the minimum delay between two notifications. The choise
-of the delivery rate must be suitable for the application or use-case:
-sensors can provide data at very high rates and allowing the system
-to send extra data which is not needed wastes system resources and
-uses battery power. Like the accuracy, Android provides, in SensorManager
+The \texttt{registerListener()} method requires, in addiction to the
+listener and the sensor, the minimum delay between two notifications.
+The choise of the delivery rate must be suitable for the application
+or use-case: sensors can provide data at very high rates and allowing
+the system to send extra data which is not needed wastes system resources
+and uses battery power. Like the accuracy, Android provides, in \texttt{SensorManager}
 class, four differents constants that defines four different delivery
 rate:
 \begin{description}
@@ -1237,12 +1237,13 @@ method)
 As mentioned, to access sensor information, developer must register
 one (or more) listener to a sensor through the sensor manager, after
 that Android System, according with the delay selected, calls the
-call-back method (onSensorChanged) passing a SensorEvent object, that
-contains all informations, as parameter. This interaciont can be seen
-like a sort of observer pattern in which the sensor represent the
-observable object; when it changes its state the Android System notifies
-this change to the observers (each class that implements SensorEventListener)
-registered to the sensor through the Sensor Manager register method.
+call-back method (\texttt{onSensorChanged()}) passing a \texttt{SensorEvent}
+object, that contains all informations, as parameter. This interaciont
+can be seen like a sort of observer pattern in which the sensor represent
+the observable object; when it changes its state the Android System
+notifies this change to the observers (each class that implements
+\texttt{SensorEventListener}) registered to the sensor through the
+\texttt{SensorManager} register method.
 
 The following image tries to represent this interaction.
 
@@ -1257,19 +1258,20 @@ The following image tries to represent this interaction.
 \par\end{center}
 
 
-\section{Android Sensor Support}
+\section{\texttt{AndroidSensorSupport}}
 
-This layer extends the Android Sensor Framework and simplifies the
-interaction with Android Sensors: each AndroidSensor, defined in this
-layer contains a specific AndroidSensorData that contains all informations
+\texttt{AndroidSensorSupport} models Android sensors and extends the
+Android Sensor Framework and simplifies the interaction with Android
+sensors: each \texttt{AndroidSensor}, defined in this layer contains
+a specific \texttt{AndroidSensorData} that contains all informations
 relative to the last sensor update and it can be always requested
 with a get method and not only when the data changes. For example,
 using this layer, we can request the accelerometer data when the magnetic
 field changes or vice-versa.
 
-All AndroidSensors defined are, at the same time observer (of the
-phisic sensor because implements \texttt{SensorEventListener}) and
-observable: the developer can attach to the \texttt{AndroidSensor}
+All \texttt{AndroidSensors} defined are, at the same time observer
+(of the phisic sensor because implements \texttt{SensorEventListener})
+and observable: the developer can attach to the \texttt{AndroidSensor}
 a listener that does something when the data changes. The only operation
 that the \texttt{AndroidSensor} does when the system calls \texttt{onSensorChanged}
 is to update his sensor data and notifies this change to all his observers.
@@ -1291,16 +1293,40 @@ In the following sub-sections is analyzed the project and described
 how to use this layer with a final example.
 
 
-\subsection{AndroidSensorData package}
+\subsection{How \texttt{AndroidSensorSupport} works}
 
-The it.unibo.android.sensorData package contains all interfaces and
-implementations that realizes the SensorData model. Each sensor has
-a particular instance of AndroidSensorData that extends the superclass
-as shown in the image below:
+\texttt{AndroidSensorSupport} provides a new layer between the application
+and the Android Sensor Framework: now developers can insert the business
+logic tha needs sensors informations directly into an observer which
+is connected to the real sensor through the \texttt{AndroidSensor}
+class (which implements the \texttt{SensorEventListener} and extends
+the \texttt{Observable} class.
+
+The following figure shows how the \texttt{AndroidSensorSupport} works:
 
 \begin{center}
 \begin{figure}[H]
-\caption{SensorData class diagram}
+\caption{How Android Sensor Support works}
+
+
+\centering{}\includegraphics[width=0.4\paperwidth]{img/AndroidSensorSupport}
+\end{figure}
+
+\par\end{center}
+
+\clearpage{}
+
+
+\subsection{\texttt{AndroidSensorData} package}
+
+The \texttt{it.unibo.android.sensorData} package contains all interfaces
+and implementations that realizes the \texttt{SensorData} model. Each
+sensor has a particular instance of \texttt{AndroidSensorData} that
+extends the superclass as shown in the image below:
+
+\begin{center}
+\begin{figure}[H]
+\caption{\texttt{SensorData} class diagram}
 
 
 \centering{}\includegraphics[width=0.9\paperwidth]{img/sensorDataUML}
@@ -1309,13 +1335,14 @@ as shown in the image below:
 \par\end{center}
 
 
-\subsubsection{AndroidSensorData}
+\subsubsection{\texttt{AndroidSensorData}}
 
 This class provides the standard methods and variables of each subclass.
-It only implements the IObserver interface defined in the uniboInterfaces.jar
-library and extends the Observable java class.
+It only implements the \texttt{IObserver} interface defined in the
+\texttt{uniboInterfaces.jar} library and extends the \texttt{Observable}
+java class.
 
-The following codes shows the AndroidSensorData interface:\\
+The following codes shows the \texttt{AndroidSensorData} interface:\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -1343,7 +1370,7 @@ public interface IAndroidSensorData extends IObservable {
 This methods are useful to obtain all standard informations such as
 values as array of float, accuracy, timestamp, name and the two string
 representations. In the following code, is shown the implementation
-of a generic AndroidSensorData.\\
+of a generic \texttt{AndroidSensorData}.\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -1393,12 +1420,7 @@ public class AndroidSensorData extends Observable implements IAndroidSensorData{
 	public int getAccuracy() {
 		return accuracy;
 	}
-\end{lstlisting}
-%
-\end{minipage}}
 
-\ovalbox{\begin{minipage}[t]{1\columnwidth}%
-\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
 	@Override
 	public long getTimestamp() {
 		return timestamp;
@@ -1419,7 +1441,12 @@ public class AndroidSensorData extends Observable implements IAndroidSensorData{
 		else 
 			return "Not yet initialized";
 	}
+\end{lstlisting}
+%
+\end{minipage}}
 
+\ovalbox{\begin{minipage}[t]{1\columnwidth}%
+\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
 	@Override
 	public String getJsonRep(){
 		if(initialized())
@@ -1443,14 +1470,16 @@ public class AndroidSensorData extends Observable implements IAndroidSensorData{
 \end{minipage}}\\
 
 
-Each AndroidSensorData extends this class and provides specific features
-for his particular case.
+Each \texttt{AndroidSensorData} extends this class and provides specific
+features for his particular case.
+
+\clearpage{}
 
 
-\subsubsection{AndroidSingleValueSensorData}
+\subsubsection{\texttt{AndroidSingleValueSensorData}}
 
-This class adds to the AndroidSensorData only one method that returns
-the single value measured by the sensor:\\
+This class adds to the \texttt{AndroidSensorData} only one method
+that returns the single value measured by the sensor:\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -1470,8 +1499,8 @@ public interface IAndroidSingleValueSensorData extends IAndroidSensorData{
 
 
 In the implementation is extended the constructor that saves in a
-variable the measured value (value{[}0{]} passed as argument) and
-overrides the getPrologRep() method:\\
+variable the measured value (\texttt{value{[}0{]}} passed as argument)
+and overrides the \texttt{getPrologRep()} method:\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -1479,12 +1508,10 @@ overrides the getPrologRep() method:\\
 
 \begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
 package it.unibo.android.sensorData.implementation;
-
 import it.unibo.android.sensorData.interfaces.IAndroidSingleValueSensorData;
 
 public class AndroidSingleValueSensorData extends AndroidSensorData implements
 		IAndroidSingleValueSensorData {
-
 	protected float value; 
 
 	public AndroidSingleValueSensorData(){
@@ -1518,42 +1545,46 @@ public class AndroidSingleValueSensorData extends AndroidSensorData implements
 
 
 From this class are extended other subclasses that provides specific
-methods that calls the super getValue() and in some cases had a conversion:
+methods that calls the super \texttt{getValue()} and in some cases
+had a conversion:
 \begin{description}
-\item [{IAndroidLightData}]~
+\item [{\texttt{IAndroidLightData}}]~
 
 \begin{itemize}
-\item getLight(); returns the light in lx.
+\item \texttt{getLight()}; returns the light in lx.
 \end{itemize}
-\item [{IAndroidPressureData}]~
+\item [{\texttt{IAndroidPressureData}}]~
 
 \begin{itemize}
-\item getPressure(); returns the pressure in hPa or mbar.
+\item \texttt{getPressure()}; returns the pressure in hPa or mbar.
 \end{itemize}
-\item [{IAndroidProximityData}]~
+\item [{\texttt{IAndroidProximityData}}]~
 
 \begin{itemize}
-\item isPresent(); this method returns a boolean: if the device detects
-something returns true.
+\item \texttt{isPresent()}; this method returns a boolean: if the device
+detects something returns true.
 \end{itemize}
-\item [{IAndroidRelativeHumidity}]~
+\item [{\texttt{IAndroidRelativeHumidity}}]~
 
 \begin{itemize}
-\item getHumidity(); returns the relative humidity in \%.
+\item \texttt{getHumidity()}; returns the relative humidity in \%.
 \end{itemize}
-\item [{IAndroidTemperatureData}]~
+\item [{\texttt{IAndroidTemperatureData}}]~
 
 \begin{itemize}
-\item getTemperatureCelsius(); returns the temperature in Celsius degrees.
-\item getTemperatureFarenheit(); returns the temperature in Farenheit degrees.
-\item getTemperatureKelvin(); returns the temperature in Kelvin degrees.
+\item \texttt{getTemperatureCelsius()}; returns the temperature in Celsius
+degrees.
+\item \texttt{getTemperatureFarenheit()}; returns the temperature in Farenheit
+degrees.
+\item \texttt{getTemperatureKelvin()}; returns the temperature in Kelvin
+degrees.
 \end{itemize}
 \end{description}
 
-\subsubsection{AndroidThreeAxisSensorData}
+\subsubsection{\texttt{AndroidThreeAxisSensorData}}
 
-This class defines the standard SensorData for each three axis sensor
-(accelerometer, gyroscope, etc.). It adds to the AndroidSensorData
+This class defines the standard \texttt{SensorData} for each three
+axis sensor (accelerometer, gyroscope, etc.). It adds to the \texttt{AndroidSensorData}
 three methods (one for each axis' values).\\
 
 
@@ -1575,8 +1606,8 @@ public interface IAndroidThreeAxisSensorData extends IAndroidSensorData {
 \end{minipage}}\\
 
 
-Like the AndroidSingleValueSensorData it defines a variable for each
-axis' value, extends the constructor and overrides the getPrologRep()
+Like the \texttt{AndroidSingleValueSensorData} it defines a variable
+for each axis' value, extends the constructor and overrides the \texttt{getPrologRep()}
 method:\\
 
 
@@ -1633,71 +1664,71 @@ public class AndroidThreeAxisSensorData extends AndroidSensorData implements
 \end{lstlisting}
 %
 \end{minipage}}\\
+\\
+\\
 
 
-and, still other SensorData, each class that extends this have specific
-methods:
+and, still other \texttt{SensorData}, each class that extends this
+have specific methods:
 \begin{description}
-\item [{IAndroidAccelerometerData}]~
+\item [{\texttt{IAndroidAccelerometerData}}]~
 
 \begin{itemize}
-\item getAccelerationX(); returns the acceleration value along the X axis;
-\item getAccelerationY(); returns the acceleration value along the Y axis;
-\item getAccelerationZ(); returns the acceleration value along the Z axis;
-\item getAcceleration(); returns the device's acceleration calculating as
-$\sqrt{a_{x}^{2}+a_{y}^{2}+a_{z}^{2}}$
+\item \texttt{getAccelerationX()}; returns the acceleration value along
+the X axis;
+\item \texttt{getAccelerationY()}; returns the acceleration value along
+the Y axis;
+\item \texttt{getAccelerationZ()}; returns the acceleration value along
+the Z axis;
+\item \texttt{getAcceleration()}; returns the device's acceleration calculating
+as $\sqrt{a_{x}^{2}+a_{y}^{2}+a_{z}^{2}}$
 \end{itemize}
-\item [{IAndroidGravityData}]~
+\item [{\texttt{IAndroidGravityData}}]~
 
 \begin{itemize}
-\item getGravityX(); returns the gravity value along the X axis;
-\item getGravityY(); returns the gravity value along the Y axis;
-\item getGravityZ(); returns the gravity value along the Z axis
+\item \texttt{getGravityX()}; returns the gravity value along the X axis;
+\item \texttt{getGravityY()}; returns the gravity value along the Y axis;
+\item \texttt{getGravityZ()}; returns the gravity value along the Z axis
 \end{itemize}
-\item [{~}]~
-\item [{~}]~
-\item [{~}]~
-\item [{~}]~
-\item [{~}]~
-\item [{~}]~
-\item [{~}]~
-\item [{~}]~
-\item [{IAndroidGyroscopeData}]~
+\item [{\texttt{IAndroidGyroscopeData}}]~
 
 \begin{itemize}
-\item getRotationRateX(); returns the rotation rate value around the X axis;
-\item getRotationRateY(); returns the rotation rate value around the Y axis;
-\item getRotationRateZ(); returns the rotation rate value around the Z axis
+\item \texttt{getRotationRateX()}; returns the rotation rate value around
+the X axis;
+\item \texttt{getRotationRateY()}; returns the rotation rate value around
+the Y axis;
+\item \texttt{getRotationRateZ()}; returns the rotation rate value around
+the Z axis
 \end{itemize}
-\item [{IAndroidMagneticFieldData}]~
+\item [{\texttt{IAndroidMagneticFieldData}}]~
 
 \begin{itemize}
-\item getMagneticFieldX(); returns the magnetic field value along the X
-axis;
-\item getMagneticFieldY(); returns the magnetic field value along the Y
-axis;
-\item getMagneticFieldZ(); returns the magnetic field value along the Z
-axis
+\item \texttt{getMagneticFieldX()}; returns the magnetic field value along
+the X axis;
+\item \texttt{getMagneticFieldY()}; returns the magnetic field value along
+the Y axis;
+\item \texttt{getMagneticFieldZ()}; returns the magnetic field value along
+the Z axis
 \end{itemize}
-\item [{IAndroidPositionRotationVectorData}]~
+\item [{\texttt{IAndroidPositionRotationVectorData}}]~
 
 \begin{itemize}
-\item getComponentX(); returns the rotation component value around the X
-axis;
-\item getComponentY(); returns the rotation component value around the Y
-axis;
-\item getComponentZ(); returns the rotation component value around the Z
-axis
+\item \texttt{getComponentX()}; returns the rotation component value around
+the X axis;
+\item \texttt{getComponentY()}; returns the rotation component value around
+the Y axis;
+\item \texttt{getComponentZ()}; returns the rotation component value around
+the Z axis
 \end{itemize}
 \end{description}
 \clearpage{}
 
 
-\subsubsection{AndroidThreeAxisSensorDataWithCorrection}
+\subsubsection{\texttt{AndroidThreeAxisSensorDataWithCorrection}}
 
-This class extends the ThreeAxisSensorData and adds to it other three
-values that represents the correction applied by the system accordin
-to the sensor informations:\\
+This class extends the \texttt{ThreeAxisSensorData} and adds to it
+other three values that represents the correction applied by the system
+accordin to the sensor informations:\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -1719,7 +1750,8 @@ public interface IAndroidThreeAxisSensorDataWithCorrection extends IAndroidThree
 
 
 Like the other subclasses it defines a variable for each axis' correction
-values, extends the constructor and overrides the getPrologRep() method:\\
+values, extends the constructor and overrides the \texttt{getPrologRep()}
+method:\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -1779,13 +1811,14 @@ public class AndroidThreeAxisSensorDataWithCorrection extends AndroidThreeAxisSe
 %
 \end{minipage}}\\
 The only two sensors that have this type of data representation are
-the GyroscopeUncalibrated and the MagneticFieldUncalibrated and their
-data representation extends this class but implements also the Gyroscope
-or MagneticField data representation. In the following code is show
-the AndroidGyroscopeUncalibratedData, for the AndroidMagneticFieldUncalibratedData
-the implementation is similar, the only difference is the name of
-get methods for correction (the gyroscope have getDrift and the magnetic
-field have getBias):
+the \texttt{GyroscopeUncalibrated} and the \texttt{MagneticFieldUncalibrated}
+and their data representation extends this class but implements also
+the \texttt{GyroscopeData} or \texttt{MagneticFieldData} representation.
+In the following code is show the \texttt{AndroidGyroscopeUncalibratedData},
+for the \texttt{AndroidMagneticFieldUncalibratedData} the implementation
+is similar, the only difference is the name of get methods for correction
+(the gyroscope have \texttt{getDrift} and the magnetic field have
+\texttt{getBias}):
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
 \qquad{}\texttt{\textsl{\textcolor{black}{IAndroidGyroscopeUncalibratedData.java}}}
@@ -1865,28 +1898,24 @@ public class AndroidGyroscopeUncalibratedData extends
 
 
 
-\subsubsection{AndroidMotionRotationVectorData}
+\subsubsection{\texttt{AndroidMotionRotationVectorData}}
 
 This class realizes the data representation for a motion rotation
-vector sensor. It is different form a position rotation vector because
-he can have 4 values: the same of position rotation vector and a scalar
-component:
+vector sensor. It is different form a \texttt{PositionRotationVectorData}
+because he can have 4 values: the same of position rotation vector
+and a scalar component:
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
 \qquad{}\texttt{\textsl{\textcolor{black}{IAndroidMotionRotationVectorData.java}}}
 
 \begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
 package it.unibo.android.sensorData.interfaces.motionSensors;
-
 import it.unibo.android.sensorData.interfaces.IAndroidSensorData;
-
 public interface IAndroidMotionRotationVectorData extends IAndroidSensorData {
-
 	public float getComponentX();
 	public float getComponentY();
 	public float getComponentZ();
 	public float getScalarComponent();
-
 } 
 \end{lstlisting}
 %
@@ -1898,13 +1927,10 @@ public interface IAndroidMotionRotationVectorData extends IAndroidSensorData {
 
 \begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
 package it.unibo.android.sensorData.implementation.motionSensors;
-
 import it.unibo.android.sensorData.implementation.AndroidSensorData;
 import it.unibo.android.sensorData.interfaces.motionSensors.IAndroidMotionRotationVectorData;
-
 public class AndroidMotionRotationVectorData extends AndroidSensorData 
 						implements IAndroidMotionRotationVectorData {
-
 	protected float componentX, componentY, componentZ, componentS;
 
 	public AndroidMotionRotationVectorData(){
@@ -1954,7 +1980,7 @@ public class AndroidMotionRotationVectorData extends AndroidSensorData
 
 
 
-\subsubsection{AndroidDetectionSensorData}
+\subsubsection{\texttt{AndroidDetectionSensorData}}
 
 This kind of sensor data representation is different from the others:
 it don't have any value and the only thing that it save is the real
@@ -2035,18 +2061,18 @@ public class AndroidDetectionSensorData extends AndroidSensorData
 \end{lstlisting}
 %
 \end{minipage}}\\
-Is needed an override of getValue() method because he don't have values,
-so is correct that this method returns null and is also necessary
-to add another constructor that have the detection time as parameter
-for the JSON reconstruction.
+Is needed an override of \texttt{getValues()} method because he don't
+have values, so is correct that this method returns null and is also
+necessary to add another constructor that have the detection time
+as parameter for the \texttt{JSON} reconstruction.
 
 
-\subsubsection{AndroidSensorDataUtils}
+\subsubsection{\texttt{AndroidSensorDataUtils}}
 
-This is a static class that provides a reconstruction of SensorData
-object from a JSON string. It only contains a static method that obtain
-information using a JSON parser and then, according with the name,
-calls the specific constructor of SensorData:\\
+This is a static class that provides a reconstruction of \texttt{SensorData}
+object from a \texttt{JSON} string. It only contains a static method
+that obtain information using a \texttt{JSON} parser and then, according
+with the name, calls the specific constructor of \texttt{SensorData}:\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -2157,20 +2183,21 @@ public class AndroidSensorDataUtils {
 \end{minipage}}
 
 
-\subsection{AndroidSensorSupport package}
+\subsection{\texttt{AndroidSensorSupport} package}
 
-The AndroidSensorSupport package contains all classes that describe
-a sensor, extending the Android'idea of sensor. As mentioned for Android
-a sensor data cannot be asked to the sensor and sensors doesn't have
-a variable that contains last update values. These classes implements
-the Android's SensorEventListener interface and also IObserver and
-IObservable interfaces defined in uniboInterfaces.jar contained in
-it.unibo.iss.libs. Each sensor extends the Observable class, so the
-developer can attach observer(s) eachone can do different tasks, without
-interferences with the sensor update (this is the only operation that
-the onSensorChange() method does, followed by the update of observers).
+The \texttt{AndroidSensorSupport} package contains all classes that
+describe a sensor, extending the Android's idea of sensor. As mentioned
+for Android a sensor data cannot be asked to the sensor and sensors
+doesn't have a variable that contains last update values. These classes
+implements the Android's \texttt{SensorEventListener} interface and
+also \texttt{IObserver} and \texttt{IObservable} interfaces defined
+in \texttt{uniboInterfaces.jar} contained in \texttt{it.unibo.iss.libs}.
+Each sensor extends the \texttt{Observable} class, so the developer
+can attach observer(s) eachone can do different tasks, without interferences
+with the sensor update (this is the only operation that the \texttt{onSensorChange()}
+method does, followed by the update of observers).
 
-The following image represent the diagram class of the AndroidSensorSupport
+The following image represent the diagram class of the \texttt{AndroidSensorSupport}
 package:
 
 \begin{center}
@@ -2183,12 +2210,14 @@ package:
 
 \par\end{center}
 
+\clearpage{}
 
-\subsubsection{AndroidSensor}
 
-AndroidSensor is the superclass that defines all methods that each
-sensor must provide to the developer. The interface shows only methods
-usefull for the developer :
+\subsubsection{\texttt{AndroidSensor}}
+
+\texttt{AndroidSensor} is the superclass that defines all methods
+that each sensor must provide to the developer. The interface shows
+only methods usefull for the developer :
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
 \qquad{}\texttt{\textsl{\textcolor{black}{IAndroidSensor.java}}}
@@ -2259,41 +2288,45 @@ public abstract class AndroidSensor extends Observable implements IAndroidSensor
 \end{minipage}}\\
 The interfaces describes all methods useful for the developer:
 \begin{description}
-\item [{unregister()}] removes all observers and unregister the AndroidSensor
-from the SensorManager. Usefull when the application goes onPause()
-\item [{getData()}] returns the last updated SensorData. In this class
-returns a generic SensorData, but in subclasses this method is overwritten
-by another getData() that returns the specific SensorData.
+\item [{\texttt{unregister()}}] removes all observers and unregister the
+\texttt{AndroidSensor} from the \texttt{SensorManager}. Usefull when
+the application goes \texttt{onPause()}
+\item [{\texttt{getData()}}] returns the last updated \texttt{SensorData}.
+In this class returns a generic \texttt{SensorData}, but in subclasses
+this method is overwritten by another \texttt{getData()} that returns
+the specific \texttt{SensorData}.
 \end{description}
 while the implementation defines also all ``background'' method: 
 \begin{description}
-\item [{onSensorChanged()}] inherited from SensorEventListener, that in
-this case only updates the SensorData. In subclassess also call the
-update method.
-\item [{update()}] inherited from the Observable class. Set his value as
-changed and then send a notification to all observers with the update
-data.
-\item [{addObserver()}] inherited from the Observable class. Only call
-the super method.
+\item [{\texttt{onSensorChanged()}}] inherited from \texttt{SensorEventListener},
+that in this case only updates the \texttt{SensorData}. In subclassess
+also call the update method.
+\item [{\texttt{update()}}] inherited from the \texttt{Observable} class.
+Set his value as changed and then send a notification to all observers
+with the update data.
+\item [{\texttt{addObserver()}}] inherited from the \texttt{Observable}
+class. Only call the super method.
 \end{description}
 As mentioned, all subclasses 
 \begin{itemize}
-\item overrides the onSensorChange() method updating the specific SensorData
-and then calls the update method passing as paramenter the new SensorData.
-\item overrides the unregister() method: deletes the instance from the instances
-list and then calls the super method.
-\item overwrite the getData() method with a specific method that returns
-a specific type of SensorData.
-\item defines a getInstance() method that, if exist, returns an instance
-of the specific AndroidSensor requested, else calls the constructor
-and then return this instance.
-\item defines a private constructor that register the AndroidSensor to the
-SensorManager and initialize a new SensorData as null (until the first
-update is not received).
+\item overrides the \texttt{onSensorChange()} method updating the specific
+\texttt{SensorData} and then calls the update method passing as paramenter
+the new \texttt{SensorData}.
+\item overrides the \texttt{unregister()} method: deletes the instance from
+the instances list and then calls the super method.
+\item overwrite the \texttt{getData()} method with a specific method that
+returns a specific type of \texttt{SensorData}.
+\item defines a \texttt{getInstance()} method that, if exist, returns an
+instance of the specific \texttt{AndroidSensor} requested, else calls
+the constructor and then return this instance.
+\item defines a private constructor that register the \texttt{AndroidSensor}
+to the \texttt{SensorManager} and initialize a new \texttt{SensorData}
+as null (until the first update is not received).
 \end{itemize}
-The following code shows an AndroidAccelerometer. In the interface
-the only method introduced is the new getData() that returns an IAndroidAccelerometerData,
-while in the implementation are defined the methods described above:
+The following code shows an \texttt{AndroidAccelerometer}. In the
+interface the only method introduced is the new \texttt{getData()}
+that returns an \texttt{IAndroidAccelerometerData}, while in the implementation
+are defined the methods described above:
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
 \qquad{}\texttt{\textsl{\textcolor{black}{IAndroidAccelerometer.java}}}
@@ -2391,11 +2424,11 @@ public class AndroidAccelerometer extends AndroidSensor implements IAndroidAccel
 
 
 For each other sensor the implementation is the same, the only difference
-is the type of SensorData and the type of the instances list (obviously
-is the same of the AndroidSensor). For the SensorData type is possible
-to reference with the following table that realizes a match between
-the Sensor defined by Android, and the new AndroidSensor classess
-with the AndroidSensorData:
+is the type of \texttt{SensorData} and the type of the instances list
+(obviously is the same of the \texttt{AndroidSensor}). For the \texttt{SensorData}
+type is possible to reference with the following table that realizes
+a match between the sensor type defined by Android, and the new \texttt{AndroidSensor}
+classess with the \texttt{AndroidSensorData}:
 
 \begin{center}
 \begin{minipage}[t]{1\columnwidth}%
@@ -2471,20 +2504,21 @@ framework provides alternate methods for acquiring device orientation.%
 \par\end{center}
 
 
-\subsubsection{AndroidSensorFactory}
+\subsubsection{\texttt{AndroidSensorFactory}}
 
-This class is defined in the main implementation package (it.unibo.android.sensorSupport.implementation)
-and provides methods to obtain an instance of a particular AndroidSensor.
+This class is defined in the main implementation package (\texttt{it.unibo.android.sensorSupport.implementation})
+and provides methods to obtain an instance of a particular \texttt{AndroidSensor}.
 Developers can ask to the factory a specific sensor in two methods:
 \begin{lyxlist}{00.00.0000}
-\item [{getInstance()}] passing the type of sensor as a parameter (with
-the delay, the observer and the SensorManager).
-\item [{get{[}SENSOR{]}()}] where {[}SENSOR{]} is the name of the sensor.
-In this case developer must pass to the factory only the SensorManager
-and the delay; there are two possibilities: developer can pass also
-the observer or not (the observer can be not necessary, for example
-if the application not constantly need notification of the update
-but only want to request SensorData in specific times).
+\item [{\texttt{getInstance()}}] passing the type of sensor as a parameter
+(with the delay, the observer and the SensorManager).
+\item [{\texttt{get{[}SENSOR{]}()}}] where \texttt{{[}SENSOR{]}} is the
+name of the sensor. In this case developer must pass to the factory
+only the \texttt{SensorManager} and the delay; there are two possibilities:
+developer can pass also the observer or not (the observer can be not
+necessary, for example if the application not constantly need notification
+of the update but only want to request \texttt{SensorData} in specific
+times).
 \end{lyxlist}
 AndroidSensorFactory code is shown below:\\
 
@@ -2621,34 +2655,13 @@ public class AndroidSensorFactory {
 Last two methods are defined also for each other sensors.
 
 
-\subsection{How AndroidSensorSupport works}
+\subsection{How to use \texttt{AndroidSensorSupport}}
 
-AndroidSensorSupport provides a new layer between the application
-and the AndroidSensorFramework: now developers can insert the business
-logic tha needs sensors informations directly into an observer which
-is connected to the real sensor through the AndroidSensor class (that
-implemente the SensorEventListener and extends the Observable interface.
-
-The following figure shows how the AndroidSensorSupport works:
-
-\begin{center}
-\begin{figure}[H]
-\caption{How Android Sensor Support works}
-
-
-\centering{}\includegraphics[width=0.4\paperwidth]{img/AndroidSensorSupport}
-\end{figure}
-
-\par\end{center}
-
-
-\subsection{How to use AndroidSensorSupport}
-
-The AndroidSensorSupport layer, as mentioned, simplifies the sensors
-utilization, and provides to the developer methods to obtain the last
-updated SensorData overcoming the constraint of wait the next sensor
-update or save values each time (it does this operation automatically
-and transparently).
+The \texttt{AndroidSensorSupport} layer, as mentioned, simplifies
+the sensors utilization, and provides to the developer methods to
+obtain the last updated \texttt{SensorData} overcoming the constraint
+of wait the next sensor update or save values each time (it does this
+operation automatically and transparently).
 
 In this section is shown how to use this layer also using an example.
 
@@ -2656,11 +2669,11 @@ In this section is shown how to use this layer also using an example.
 \subsubsection{Request a Sensor}
 
 To obtain an instance of a sensor developer have to ask it to the
-AndroidSensorFactory that provides to discriminate the type of sensor
-and then forwards the request to the specific AndroidSensor. There
-are three methods to obtain an AndroidSensor:
+\texttt{AndroidSensorFactory} that provides to discriminate the type
+of sensor and then forwards the request to the specific \texttt{AndroidSensor}.
+There are three methods to obtain an \texttt{AndroidSensor}:
 \begin{enumerate}
-\item getSensor(SensorManager, SensorType, Delay, Observer)
+\item \texttt{getSensor(SensorManager, SensorType, Delay, Observer)}
 
 
 This method needs the sensor manager, the type of sensor that the
@@ -2688,12 +2701,13 @@ IAndroidAccelerometer accelerometer = (IAndroidAccelerometer)
 \\
 
 
-\item get{[}SENSOR\_TYPE{]}(SensorManager, Delay, Observer)
+\item \texttt{get{[}SENSOR\_TYPE{]}(SensorManager, Delay, Observer)}
 
 
-This method returns a specific type of AndroidSensor, then the cast
-is not necessary. Like the getSensor() method needs the sensor manager
-instance, the delay and the observer.\\
+This method returns a specific type of \texttt{AndroidSensor} (specified
+in the method name e.g. \texttt{getAccelerometer(...)} or \texttt{getLightSensor(...)}),
+then the cast is not necessary. Like the \texttt{getSensor(...)} method
+needs the sensor manager instance, the delay and the observer.\\
 
 
 
@@ -2706,13 +2720,13 @@ AndroidLight light = AndroidSensorFactory.getLightSensor(manager, delay, observe
 \\
 
 
-\item get{[}SENSOR\_TYPE{]}(SensorManager, Delay, Observer)
+\item \texttt{get{[}SENSOR\_TYPE{]}(SensorManager, Delay, Observer)}
 
 
-Like the previous method, this returns a specific type of AndroidSensor
+Like the previous method, this returns a specific type of \texttt{AndroidSensor}
 too. This method doesn't need the observer, then the developer request
 a sensor that doesn't notifies changes but his data can be obtained
-calling the getData() method.\\
+calling the \texttt{getData()} method.\\
 
 
 
@@ -2729,10 +2743,10 @@ AndroidProximity proximity = AndroidSensorFactory.getProximitySensor(manager, de
 
 \subsubsection{Unregister sensor}
 
-To unregister a sensor, for example when the application goes onPause()
+To unregister a sensor, for example when the application goes \texttt{onPause()}
 and is no longer necessary the sensor usage, developer can call the
-unregister method that detaches the sensor from the sensor manager
-(that must be passed as parameter).\\
+\texttt{unregister(...)} method that detaches the sensor from the
+sensor manager (that must be passed as parameter).\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -2747,14 +2761,14 @@ gyroscope.unregister(manager);
 
 \subsubsection{Operation with SensorData}
 
-There are two ways to do operations whit SensorData: 
+There are two ways to do operations whit \texttt{SensorData}: 
 \begin{enumerate}
-\item Using the getData() method
+\item Using the \texttt{getData()} method
 
 
-getData() returns the SensorData which contains all informations about
-the last update. After obtaining data, developers, can do what they
-wants with this:\\
+\texttt{getData()} returns the \texttt{SensorData} which contains
+all informations about the last update. After obtaining data, developers,
+can do what they wants with this:\\
 
 
 
@@ -2818,9 +2832,9 @@ Observer o = new Observer(){
 \subsubsection{Example}
 
 In this example are shown all previous methods used in an Android
-application that shows SensorData obtained from four different sensors
-(Accelerometer, Proximity, Light and Temperature), two of which have
-the same observer and the other do not have observers.
+application that shows \texttt{SensorData} obtained from four different
+sensors (Accelerometer, Proximity, Light and Temperature), two of
+which have the same observer and the other do not have observers.
 
 Next code shows the layout used for the application:\\
 
@@ -2990,16 +3004,17 @@ Next code shows the layout used for the application:\\
 \end{minipage}}
 
 In this project are presents, in the src directory two packagers:
-the first one contains the SensorObserver, while the second contains
-the ExampleActivity.
+the first one contains the \texttt{SensorObserver}, while the second
+contains the \texttt{ExampleActivity}.
 
 
-\paragraph*{SensorObserver}
+\paragraph*{\texttt{SensorObserver}}
 
-The SensorObserver implements the IObserver interface and realize
-the only one observer for each sensor. The constructor save the instance
-of the activity as IOutputView then, when the AndroidSensor notifies
-the update use this reference to update the GUI.
+The \texttt{SensorObserver} implements the \texttt{IObserver} interface
+and realize the only one observer for each sensor. The constructor
+save the instance of the \texttt{Activity} as \texttt{IOutputView}
+then, when the \texttt{AndroidSensor} notifies the update use this
+reference to update the GUI.
 
 This is the code:\\
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -3048,13 +3063,14 @@ public class SensorObserver implements IObserver {
 \end{minipage}}
 
 
-\paragraph*{ExampleActivity}
+\paragraph*{\texttt{ExampleActivity}}
 
-The ExampleActivity implements IOutputView. This interface provides
-methods to update the GUI, the only one used in this application is
-setOutput(msg). In this method is used the AndroidSensorDataUtils
-to rebuild the SensorData from a JSON string, then, according with
-the SensorData type the application updates the interested text field.\\
+The \texttt{ExampleActivity} implements \texttt{IOutputView}. This
+interface provides methods to update the GUI, the only one used in
+this application is \texttt{setOutput(msg)}. In this method is used
+the \texttt{AndroidSensorDataUtils} to rebuild the \texttt{SensorData}
+from a \texttt{JSON} string, then, according with the \texttt{SensorData}
+type the application updates the interested text field.\\
 
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
@@ -3130,7 +3146,7 @@ public class ExampleActivity extends Activity implements IOutputView {
 \end{minipage}}
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
-\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List, Context, Bundle, ArrayList, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
     private void initSensors(){
     	observer = new SensorObserver(this);
 		sensor_1 = (IAndroidAccelerometer) AndroidSensorFactory.getSensor(mSensorManager,
@@ -3203,7 +3219,7 @@ public class ExampleActivity extends Activity implements IOutputView {
 \end{minipage}}
 
 \ovalbox{\begin{minipage}[t]{1\columnwidth}%
-\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4]
 	@Override
 	public void addOutput(String msg) { }
 
@@ -3249,19 +3265,23 @@ public class ExampleActivity extends Activity implements IOutputView {
 
 \section{Conclusions}
 
-In this paper is defined a new layer between Android Sensor Framework
-and the Android application that provides some useful features:
+In this paper is defined an Android sensor model that offers a layer
+between Android Sensor Framework and the Android application.
+
+This layer provides some useful features:
 \begin{itemize}
 \item the new sensor classes are not only observer of the real sensor but
 also observable
-\item the onSensorChange() method updates transparently the SensorData and
-notifies this update to all observers
-\item in introduced a SensorData model that contains all sensor data informations
-relative to the last update and provide a JSON and a Prolog representation
-\item is defined an AndroidSensorFactory that returns a specific sensor
-and provides to registrate the AndroidSensor to the SensorManager
-\item is defined an SensorDataUtils class that rebuild the SensorData from
-a JSON string representation
+\item the \texttt{onSensorChange()} method updates transparently the \texttt{SensorData}
+and notifies this update to all observers
+\item in introduced a \texttt{SensorData} model that contains all sensor
+data informations relative to the last update and provide a \texttt{JSON}
+and a Prolog representation
+\item is defined an \texttt{AndroidSensorFactory} that returns a specific
+sensor and provides to registrate the \texttt{AndroidSensor} to the
+\texttt{SensorManager}
+\item is defined an \texttt{SensorDataUtils} class that rebuild the \texttt{SensorData}
+from a \texttt{JSON} string representation
 \end{itemize}
 \clearpage{}
 \begin{thebibliography}{1}

@@ -323,7 +323,7 @@ In the second part is introduced a new layer between Android Sensor Framework
 All source code are available at 
 \begin_inset CommandInset href
 LatexCommand href
-target "https://github.com/CarloAntenucci/Android-Sensors-Overview.git"
+target "https://github.com/CarloAntenucci/AndroidSensorSupport.git"
 
 \end_inset
 
@@ -5737,7 +5737,11 @@ The Android emulator cannot emulate sensors, thus, currently, is not possible
 \end_layout
 
 \begin_layout Subsubsection*
-Don't block the onSensorChanged() method
+Don't block the
+\family typewriter
+ onSensorChanged() 
+\family default
+method
 \end_layout
 
 \begin_layout Standard
@@ -5763,8 +5767,11 @@ onSensorChanged(SensorEvent)
 \end_layout
 
 \begin_layout Remark*
-If the onSensorChange(SensorEvent) contains a loop the application is stopped
- by the system.
+If the 
+\family typewriter
+onSensorChange(SensorEvent)
+\family default
+ contains a loop the application is stopped by the system.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -5797,14 +5804,21 @@ Choose sensor delay carefully
 \end_layout
 
 \begin_layout Standard
-The registerListener() method requires, in addiction to the listener and
- the sensor, the minimum delay between two notifications.
+The 
+\family typewriter
+registerListener()
+\family default
+ method requires, in addiction to the listener and the sensor, the minimum
+ delay between two notifications.
  The choise of the delivery rate must be suitable for the application or
  use-case: sensors can provide data at very high rates and allowing the
  system to send extra data which is not needed wastes system resources and
  uses battery power.
- Like the accuracy, Android provides, in SensorManager class, four differents
- constants that defines four different delivery rate:
+ Like the accuracy, Android provides, in 
+\family typewriter
+SensorManager
+\family default
+ class, four differents constants that defines four different delivery rate:
 \end_layout
 
 \begin_layout Description
@@ -5851,13 +5865,26 @@ How Android Sensor Framework works
 \begin_layout Standard
 As mentioned, to access sensor information, developer must register one
  (or more) listener to a sensor through the sensor manager, after that Android
- System, according with the delay selected, calls the call-back method (onSensor
-Changed) passing a SensorEvent object, that contains all informations, as
- parameter.
+ System, according with the delay selected, calls the call-back method (
+\family typewriter
+onSensorChanged()
+\family default
+) passing a 
+\family typewriter
+SensorEvent
+\family default
+ object, that contains all informations, as parameter.
  This interaciont can be seen like a sort of observer pattern in which the
  sensor represent the observable object; when it changes its state the Android
  System notifies this change to the observers (each class that implements
- SensorEventListener) registered to the sensor through the Sensor Manager
+ 
+\family typewriter
+SensorEventListener
+\family default
+) registered to the sensor through the 
+\family typewriter
+SensorManager
+\family default
  register method.
 \end_layout
 
@@ -5902,22 +5929,38 @@ How Android Sensor Framework works
 \end_layout
 
 \begin_layout Section
-Android Sensor Support
+
+\family typewriter
+AndroidSensorSupport
 \end_layout
 
 \begin_layout Standard
-This layer extends the Android Sensor Framework and simplifies the interaction
- with Android Sensors: each AndroidSensor, defined in this layer contains
- a specific AndroidSensorData that contains all informations relative to
- the last sensor update and it can be always requested with a get method
- and not only when the data changes.
+
+\family typewriter
+AndroidSensorSupport
+\family default
+ models Android sensors and extends the Android Sensor Framework and simplifies
+ the interaction with Android sensors: each 
+\family typewriter
+AndroidSensor
+\family default
+, defined in this layer contains a specific 
+\family typewriter
+AndroidSensorData
+\family default
+ that contains all informations relative to the last sensor update and it
+ can be always requested with a get method and not only when the data changes.
  For example, using this layer, we can request the accelerometer data when
  the magnetic field changes or vice-versa.
 \end_layout
 
 \begin_layout Standard
-All AndroidSensors defined are, at the same time observer (of the phisic
- sensor because implements 
+All 
+\family typewriter
+AndroidSensors
+\family default
+ defined are, at the same time observer (of the phisic sensor because implements
+ 
 \family typewriter
 SensorEventListener
 \family default
@@ -5991,14 +6034,42 @@ In the following sub-sections is analyzed the project and described how
 \end_layout
 
 \begin_layout Subsection
-AndroidSensorData package
+How 
+\family typewriter
+AndroidSensorSupport
+\family default
+ works
 \end_layout
 
 \begin_layout Standard
-The it.unibo.android.sensorData package contains all interfaces and implementations
- that realizes the SensorData model.
- Each sensor has a particular instance of AndroidSensorData that extends
- the superclass as shown in the image below:
+
+\family typewriter
+AndroidSensorSupport
+\family default
+ provides a new layer between the application and the Android Sensor Framework:
+ now developers can insert the business logic tha needs sensors informations
+ directly into an observer which is connected to the real sensor through
+ the 
+\family typewriter
+AndroidSensor
+\family default
+ class (which implements the 
+\family typewriter
+SensorEventListener
+\family default
+ and extends the 
+\family typewriter
+Observable
+\family default
+ class.
+\end_layout
+
+\begin_layout Standard
+The following figure shows how the 
+\family typewriter
+AndroidSensorSupport
+\family default
+ works:
 \end_layout
 
 \begin_layout Standard
@@ -6012,7 +6083,79 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-SensorData class diagram
+How Android Sensor Support works
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename img/AndroidSensorSupport.png
+	lyxscale 30
+	width 40page%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+\family typewriter
+AndroidSensorData
+\family default
+ package
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+it.unibo.android.sensorData
+\family default
+ package contains all interfaces and implementations that realizes the 
+\family typewriter
+SensorData
+\family default
+ model.
+ Each sensor has a particular instance of 
+\family typewriter
+AndroidSensorData
+\family default
+ that extends the superclass as shown in the image below:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+SensorData
+\family default
+ class diagram
 \end_layout
 
 \end_inset
@@ -6038,17 +6181,34 @@ SensorData class diagram
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidSensorData
 \end_layout
 
 \begin_layout Standard
 This class provides the standard methods and variables of each subclass.
- It only implements the IObserver interface defined in the uniboInterfaces.jar
- library and extends the Observable java class.
+ It only implements the 
+\family typewriter
+IObserver
+\family default
+ interface defined in the 
+\family typewriter
+uniboInterfaces.jar
+\family default
+ library and extends the 
+\family typewriter
+Observable
+\family default
+ java class.
 \end_layout
 
 \begin_layout Standard
-The following codes shows the AndroidSensorData interface:
+The following codes shows the 
+\family typewriter
+AndroidSensorData
+\family default
+ interface:
 \begin_inset Newline newline
 \end_inset
 
@@ -6166,8 +6326,11 @@ public interface IAndroidSensorData extends IObservable {
 \begin_layout Standard
 This methods are useful to obtain all standard informations such as values
  as array of float, accuracy, timestamp, name and the two string representations.
- In the following code, is shown the implementation of a generic AndroidSensorDa
-ta.
+ In the following code, is shown the implementation of a generic 
+\family typewriter
+AndroidSensorData
+\family default
+.
 \begin_inset Newline newline
 \end_inset
 
@@ -6186,7 +6349,7 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset space \qquad{}
@@ -6413,35 +6576,9 @@ public class AndroidSensorData extends Observable implements IAndroidSensorData{
 	}
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box ovalbox
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status collapsed
-
 \begin_layout Plain Layout
-\begin_inset listings
-lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4"
-inline false
-status open
+
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -6542,9 +6679,35 @@ status open
 	}
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
 
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box ovalbox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4"
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -6649,17 +6812,32 @@ status open
 \end_layout
 
 \begin_layout Standard
-Each AndroidSensorData extends this class and provides specific features
- for his particular case.
+Each 
+\family typewriter
+AndroidSensorData
+\family default
+ extends this class and provides specific features for his particular case.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidSingleValueSensorData
 \end_layout
 
 \begin_layout Standard
-This class adds to the AndroidSensorData only one method that returns the
- single value measured by the sensor:
+This class adds to the 
+\family typewriter
+AndroidSensorData
+\family default
+ only one method that returns the single value measured by the sensor:
 \begin_inset Newline newline
 \end_inset
 
@@ -6746,8 +6924,15 @@ public interface IAndroidSingleValueSensorData extends IAndroidSensorData{
 
 \begin_layout Standard
 In the implementation is extended the constructor that saves in a variable
- the measured value (value[0] passed as argument) and overrides the getPrologRep
-() method:
+ the measured value (
+\family typewriter
+value[0]
+\family default
+ passed as argument) and overrides the 
+\family typewriter
+getPrologRep()
+\family default
+ method:
 \begin_inset Newline newline
 \end_inset
 
@@ -6766,7 +6951,7 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset space \qquad{}
@@ -6792,10 +6977,6 @@ package it.unibo.android.sensorData.implementation;
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
 import it.unibo.android.sensorData.interfaces.IAndroidSingleValueSensorData;
 \end_layout
 
@@ -6811,10 +6992,6 @@ public class AndroidSingleValueSensorData extends AndroidSensorData implements
 \begin_layout Plain Layout
 
 		IAndroidSingleValueSensorData {
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -6965,76 +7142,127 @@ public class AndroidSingleValueSensorData extends AndroidSensorData implements
 
 \begin_layout Standard
 From this class are extended other subclasses that provides specific methods
- that calls the super getValue() and in some cases had a conversion:
+ that calls the super 
+\family typewriter
+getValue()
+\family default
+ and in some cases had a conversion:
 \end_layout
 
 \begin_layout Description
+
+\family typewriter
 IAndroidLightData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getLight(); returns the light in lx.
+
+\family typewriter
+getLight()
+\family default
+; returns the light in lx.
 \end_layout
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidPressureData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getPressure(); returns the pressure in hPa or mbar.
+
+\family typewriter
+getPressure()
+\family default
+; returns the pressure in hPa or mbar.
 \end_layout
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidProximityData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-isPresent(); this method returns a boolean: if the device detects something
- returns true.
+
+\family typewriter
+isPresent()
+\family default
+; this method returns a boolean: if the device detects something returns
+ true.
 \end_layout
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidRelativeHumidity
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getHumidity(); returns the relative humidity in %.
+
+\family typewriter
+getHumidity()
+\family default
+; returns the relative humidity in %.
 \end_layout
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidTemperatureData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getTemperatureCelsius(); returns the temperature in Celsius degrees.
+
+\family typewriter
+getTemperatureCelsius()
+\family default
+; returns the temperature in Celsius degrees.
 \end_layout
 
 \begin_layout Itemize
-getTemperatureFarenheit(); returns the temperature in Farenheit degrees.
+
+\family typewriter
+getTemperatureFarenheit()
+\family default
+; returns the temperature in Farenheit degrees.
 \end_layout
 
 \begin_layout Itemize
-getTemperatureKelvin(); returns the temperature in Kelvin degrees.
+
+\family typewriter
+getTemperatureKelvin()
+\family default
+; returns the temperature in Kelvin degrees.
 \end_layout
 
 \end_deeper
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidThreeAxisSensorData
 \end_layout
 
 \begin_layout Standard
-This class defines the standard SensorData for each three axis sensor (accelerom
-eter, gyroscope, etc.).
- It adds to the AndroidSensorData three methods (one for each axis' values).
+This class defines the standard 
+\family typewriter
+SensorData
+\family default
+ for each three axis sensor (accelerometer, gyroscope, etc.).
+ It adds to the 
+\family typewriter
+AndroidSensorData
+\family default
+ three methods (one for each axis' values).
 \begin_inset Newline newline
 \end_inset
 
@@ -7130,8 +7358,16 @@ public interface IAndroidThreeAxisSensorData extends IAndroidSensorData
 \end_layout
 
 \begin_layout Standard
-Like the AndroidSingleValueSensorData it defines a variable for each axis'
- value, extends the constructor and overrides the getPrologRep() method:
+Like the 
+\family typewriter
+AndroidSingleValueSensorData
+\family default
+ it defines a variable for each axis' value, extends the constructor and
+ overrides the 
+\family typewriter
+getPrologRep()
+\family default
+ method:
 \begin_inset Newline newline
 \end_inset
 
@@ -7403,32 +7639,61 @@ public class AndroidThreeAxisSensorData extends AndroidSensorData implements
 \end_inset
 
 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-and, still other SensorData, each class that extends this have specific
- methods:
+and, still other 
+\family typewriter
+SensorData
+\family default
+, each class that extends this have specific methods:
 \end_layout
 
 \begin_layout Description
+
+\family typewriter
 IAndroidAccelerometerData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getAccelerationX(); returns the acceleration value along the X axis;
+
+\family typewriter
+getAccelerationX()
+\family default
+; returns the acceleration value along the X axis;
 \end_layout
 
 \begin_layout Itemize
-getAccelerationY(); returns the acceleration value along the Y axis;
+
+\family typewriter
+getAccelerationY()
+\family default
+; returns the acceleration value along the Y axis;
 \end_layout
 
 \begin_layout Itemize
-getAccelerationZ(); returns the acceleration value along the Z axis;
+
+\family typewriter
+getAccelerationZ()
+\family default
+; returns the acceleration value along the Z axis;
 \end_layout
 
 \begin_layout Itemize
-getAcceleration(); returns the device's acceleration calculating as 
+
+\family typewriter
+getAcceleration()
+\family default
+; returns the device's acceleration calculating as 
 \begin_inset Formula $\sqrt{a_{x}^{2}+a_{y}^{2}+a_{z}^{2}}$
 \end_inset
 
@@ -7437,130 +7702,130 @@ getAcceleration(); returns the device's acceleration calculating as
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidGravityData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getGravityX(); returns the gravity value along the X axis;
+
+\family typewriter
+getGravityX()
+\family default
+; returns the gravity value along the X axis;
 \end_layout
 
 \begin_layout Itemize
-getGravityY(); returns the gravity value along the Y axis;
+
+\family typewriter
+getGravityY()
+\family default
+; returns the gravity value along the Y axis;
 \end_layout
 
 \begin_layout Itemize
-getGravityZ(); returns the gravity value along the Z axis
+
+\family typewriter
+getGravityZ()
+\family default
+; returns the gravity value along the Z axis
 \end_layout
 
 \end_deeper
 \begin_layout Description
-\begin_inset space ~
-\end_inset
 
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
+\family typewriter
 IAndroidGyroscopeData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getRotationRateX(); returns the rotation rate value around the X axis;
+
+\family typewriter
+getRotationRateX()
+\family default
+; returns the rotation rate value around the X axis;
 \end_layout
 
 \begin_layout Itemize
-getRotationRateY(); returns the rotation rate value around the Y axis;
+
+\family typewriter
+getRotationRateY()
+\family default
+; returns the rotation rate value around the Y axis;
 \end_layout
 
 \begin_layout Itemize
-getRotationRateZ(); returns the rotation rate value around the Z axis
+
+\family typewriter
+getRotationRateZ()
+\family default
+; returns the rotation rate value around the Z axis
 \end_layout
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidMagneticFieldData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getMagneticFieldX(); returns the magnetic field value along the X axis;
+
+\family typewriter
+getMagneticFieldX()
+\family default
+; returns the magnetic field value along the X axis;
 \end_layout
 
 \begin_layout Itemize
-getMagneticFieldY(); returns the magnetic field value along the Y axis;
+
+\family typewriter
+getMagneticFieldY()
+\family default
+; returns the magnetic field value along the Y axis;
 \end_layout
 
 \begin_layout Itemize
-getMagneticFieldZ(); returns the magnetic field value along the Z axis
+
+\family typewriter
+getMagneticFieldZ()
+\family default
+; returns the magnetic field value along the Z axis
 \end_layout
 
 \end_deeper
 \begin_layout Description
+
+\family typewriter
 IAndroidPositionRotationVectorData
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-getComponentX(); returns the rotation component value around the X axis;
+
+\family typewriter
+getComponentX()
+\family default
+; returns the rotation component value around the X axis;
 \end_layout
 
 \begin_layout Itemize
-getComponentY(); returns the rotation component value around the Y axis;
+
+\family typewriter
+getComponentY()
+\family default
+; returns the rotation component value around the Y axis;
 \end_layout
 
 \begin_layout Itemize
-getComponentZ(); returns the rotation component value around the Z axis
+
+\family typewriter
+getComponentZ()
+\family default
+; returns the rotation component value around the Z axis
 \end_layout
 
 \end_deeper
@@ -7572,13 +7837,18 @@ getComponentZ(); returns the rotation component value around the Z axis
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidThreeAxisSensorDataWithCorrection
 \end_layout
 
 \begin_layout Standard
-This class extends the ThreeAxisSensorData and adds to it other three values
- that represents the correction applied by the system accordin to the sensor
- informations:
+This class extends the 
+\family typewriter
+ThreeAxisSensorData
+\family default
+ and adds to it other three values that represents the correction applied
+ by the system accordin to the sensor informations:
 \begin_inset Newline newline
 \end_inset
 
@@ -7675,7 +7945,11 @@ AxisSensorData{
 
 \begin_layout Standard
 Like the other subclasses it defines a variable for each axis' correction
- values, extends the constructor and overrides the getPrologRep() method:
+ values, extends the constructor and overrides the 
+\family typewriter
+getPrologRep()
+\family default
+ method:
 \begin_inset Newline newline
 \end_inset
 
@@ -7965,13 +8239,42 @@ nsorData
 \end_inset
 
 The only two sensors that have this type of data representation are the
- GyroscopeUncalibrated and the MagneticFieldUncalibrated and their data
- representation extends this class but implements also the Gyroscope or
- MagneticField data representation.
- In the following code is show the AndroidGyroscopeUncalibratedData, for
- the AndroidMagneticFieldUncalibratedData the implementation is similar,
- the only difference is the name of get methods for correction (the gyroscope
- have getDrift and the magnetic field have getBias):
+ 
+\family typewriter
+GyroscopeUncalibrated
+\family default
+ and the 
+\family typewriter
+MagneticFieldUncalibrated
+\family default
+ and their data representation extends this class but implements also the
+ 
+\family typewriter
+GyroscopeData
+\family default
+ or 
+\family typewriter
+MagneticFieldData
+\family default
+ representation.
+ In the following code is show the 
+\family typewriter
+AndroidGyroscopeUncalibratedData
+\family default
+, for the 
+\family typewriter
+AndroidMagneticFieldUncalibratedData
+\family default
+ the implementation is similar, the only difference is the name of get methods
+ for correction (the gyroscope have 
+\family typewriter
+getDrift
+\family default
+ and the magnetic field have 
+\family typewriter
+getBias
+\family default
+):
 \end_layout
 
 \begin_layout Standard
@@ -8350,14 +8653,20 @@ public class AndroidGyroscopeUncalibratedData extends
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidMotionRotationVectorData
 \end_layout
 
 \begin_layout Standard
 This class realizes the data representation for a motion rotation vector
  sensor.
- It is different form a position rotation vector because he can have 4 values:
- the same of position rotation vector and a scalar component:
+ It is different form a 
+\family typewriter
+PositionRotationVectorData
+\family default
+ because he can have 4 values: the same of position rotation vector and
+ a scalar component:
 \end_layout
 
 \begin_layout Standard
@@ -8372,7 +8681,7 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset space \qquad{}
@@ -8398,25 +8707,13 @@ package it.unibo.android.sensorData.interfaces.motionSensors;
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
 import it.unibo.android.sensorData.interfaces.IAndroidSensorData;
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
 
 public interface IAndroidMotionRotationVectorData extends IAndroidSensorData
  {
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -8437,10 +8734,6 @@ public interface IAndroidMotionRotationVectorData extends IAndroidSensorData
 \begin_layout Plain Layout
 
 	public float getScalarComponent();
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -8478,7 +8771,7 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset space \qquad{}
@@ -8504,10 +8797,6 @@ package it.unibo.android.sensorData.implementation.motionSensors;
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
 import it.unibo.android.sensorData.implementation.AndroidSensorData;
 \end_layout
 
@@ -8519,20 +8808,12 @@ orData;
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
 public class AndroidMotionRotationVectorData extends AndroidSensorData 
 \end_layout
 
 \begin_layout Plain Layout
 
 						implements IAndroidMotionRotationVectorData {
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -8759,6 +9040,8 @@ public class AndroidMotionRotationVectorData extends AndroidSensorData
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidDetectionSensorData
 \end_layout
 
@@ -9148,21 +9431,44 @@ public class AndroidDetectionSensorData extends AndroidSensorData
 \begin_inset Newline newline
 \end_inset
 
-Is needed an override of getValue() method because he don't have values,
- so is correct that this method returns null and is also necessary to add
- another constructor that have the detection time as parameter for the JSON
+Is needed an override of 
+\family typewriter
+getValues()
+\family default
+ method because he don't have values, so is correct that this method returns
+ null and is also necessary to add another constructor that have the detection
+ time as parameter for the 
+\family typewriter
+JSON
+\family default
  reconstruction.
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidSensorDataUtils
 \end_layout
 
 \begin_layout Standard
-This is a static class that provides a reconstruction of SensorData object
- from a JSON string.
- It only contains a static method that obtain information using a JSON parser
- and then, according with the name, calls the specific constructor of SensorData
+This is a static class that provides a reconstruction of 
+\family typewriter
+SensorData
+\family default
+ object from a 
+\family typewriter
+JSON
+\family default
+ string.
+ It only contains a static method that obtain information using a 
+\family typewriter
+JSON
+\family default
+ parser and then, according with the name, calls the specific constructor
+ of 
+\family typewriter
+SensorData
+\family default
 :
 \begin_inset Newline newline
 \end_inset
@@ -9703,25 +10009,61 @@ status open
 \end_layout
 
 \begin_layout Subsection
-AndroidSensorSupport package
+
+\family typewriter
+AndroidSensorSupport
+\family default
+ package
 \end_layout
 
 \begin_layout Standard
-The AndroidSensorSupport package contains all classes that describe a sensor,
- extending the Android'idea of sensor.
+The 
+\family typewriter
+AndroidSensorSupport
+\family default
+ package contains all classes that describe a sensor, extending the Android's
+ idea of sensor.
  As mentioned for Android a sensor data cannot be asked to the sensor and
  sensors doesn't have a variable that contains last update values.
- These classes implements the Android's SensorEventListener interface and
- also IObserver and IObservable interfaces defined in uniboInterfaces.jar
- contained in it.unibo.iss.libs.
- Each sensor extends the Observable class, so the developer can attach observer(
-s) eachone can do different tasks, without interferences with the sensor
- update (this is the only operation that the onSensorChange() method does,
- followed by the update of observers).
+ These classes implements the Android's 
+\family typewriter
+SensorEventListener
+\family default
+ interface and also 
+\family typewriter
+IObserver
+\family default
+ and 
+\family typewriter
+IObservable
+\family default
+ interfaces defined in 
+\family typewriter
+uniboInterfaces.jar
+\family default
+ contained in 
+\family typewriter
+it.unibo.iss.libs
+\family default
+.
+ Each sensor extends the 
+\family typewriter
+Observable
+\family default
+ class, so the developer can attach observer(s) eachone can do different
+ tasks, without interferences with the sensor update (this is the only operation
+ that the 
+\family typewriter
+onSensorChange()
+\family default
+ method does, followed by the update of observers).
 \end_layout
 
 \begin_layout Standard
-The following image represent the diagram class of the AndroidSensorSupport
+The following image represent the diagram class of the 
+\family typewriter
+AndroidSensorSupport
+\family default
  package:
 \end_layout
 
@@ -9761,13 +10103,26 @@ SensorSupport class diagram
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidSensor
 \end_layout
 
 \begin_layout Standard
-AndroidSensor is the superclass that defines all methods that each sensor
- must provide to the developer.
+
+\family typewriter
+AndroidSensor
+\family default
+ is the superclass that defines all methods that each sensor must provide
+ to the developer.
  The interface shows only methods usefull for the developer :
 \end_layout
 
@@ -10119,15 +10474,47 @@ The interfaces describes all methods useful for the developer:
 \end_layout
 
 \begin_layout Description
-unregister() removes all observers and unregister the AndroidSensor from
- the SensorManager.
- Usefull when the application goes onPause()
+
+\family typewriter
+unregister()
+\family default
+ removes all observers and unregister the 
+\family typewriter
+AndroidSensor
+\family default
+ from the 
+\family typewriter
+SensorManager
+\family default
+.
+ Usefull when the application goes 
+\family typewriter
+onPause()
 \end_layout
 
 \begin_layout Description
-getData() returns the last updated SensorData.
- In this class returns a generic SensorData, but in subclasses this method
- is overwritten by another getData() that returns the specific SensorData.
+
+\family typewriter
+getData()
+\family default
+ returns the last updated 
+\family typewriter
+SensorData
+\family default
+.
+ In this class returns a generic 
+\family typewriter
+SensorData
+\family default
+, but in subclasses this method is overwritten by another 
+\family typewriter
+getData()
+\family default
+ that returns the specific 
+\family typewriter
+SensorData
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -10143,19 +10530,46 @@ background
 \end_layout
 
 \begin_layout Description
-onSensorChanged() inherited from SensorEventListener, that in this case
- only updates the SensorData.
+
+\family typewriter
+onSensorChanged()
+\family default
+ inherited from 
+\family typewriter
+SensorEventListener
+\family default
+, that in this case only updates the 
+\family typewriter
+SensorData
+\family default
+.
  In subclassess also call the update method.
 \end_layout
 
 \begin_layout Description
-update() inherited from the Observable class.
+
+\family typewriter
+update()
+\family default
+ inherited from the 
+\family typewriter
+Observable
+\family default
+ class.
  Set his value as changed and then send a notification to all observers
  with the update data.
 \end_layout
 
 \begin_layout Description
-addObserver() inherited from the Observable class.
+
+\family typewriter
+addObserver()
+\family default
+ inherited from the 
+\family typewriter
+Observable
+\family default
+ class.
  Only call the super method.
 \end_layout
 
@@ -10164,37 +10578,85 @@ As mentioned, all subclasses
 \end_layout
 
 \begin_layout Itemize
-overrides the onSensorChange() method updating the specific SensorData and
- then calls the update method passing as paramenter the new SensorData.
+overrides the 
+\family typewriter
+onSensorChange()
+\family default
+ method updating the specific 
+\family typewriter
+SensorData
+\family default
+ and then calls the update method passing as paramenter the new 
+\family typewriter
+SensorData
+\family default
+.
 \end_layout
 
 \begin_layout Itemize
-overrides the unregister() method: deletes the instance from the instances
- list and then calls the super method.
+overrides the 
+\family typewriter
+unregister()
+\family default
+ method: deletes the instance from the instances list and then calls the
+ super method.
 \end_layout
 
 \begin_layout Itemize
-overwrite the getData() method with a specific method that returns a specific
- type of SensorData.
+overwrite the 
+\family typewriter
+getData()
+\family default
+ method with a specific method that returns a specific type of 
+\family typewriter
+SensorData
+\family default
+.
 \end_layout
 
 \begin_layout Itemize
-defines a getInstance() method that, if exist, returns an instance of the
- specific AndroidSensor requested, else calls the constructor and then return
- this instance.
+defines a 
+\family typewriter
+getInstance()
+\family default
+ method that, if exist, returns an instance of the specific 
+\family typewriter
+AndroidSensor
+\family default
+ requested, else calls the constructor and then return this instance.
 \end_layout
 
 \begin_layout Itemize
-defines a private constructor that register the AndroidSensor to the SensorManag
-er and initialize a new SensorData as null (until the first update is not
- received).
+defines a private constructor that register the 
+\family typewriter
+AndroidSensor
+\family default
+ to the 
+\family typewriter
+SensorManager
+\family default
+ and initialize a new 
+\family typewriter
+SensorData
+\family default
+ as null (until the first update is not received).
 \end_layout
 
 \begin_layout Standard
-The following code shows an AndroidAccelerometer.
- In the interface the only method introduced is the new getData() that returns
- an IAndroidAccelerometerData, while in the implementation are defined the
- methods described above:
+The following code shows an 
+\family typewriter
+AndroidAccelerometer
+\family default
+.
+ In the interface the only method introduced is the new 
+\family typewriter
+getData()
+\family default
+ that returns an 
+\family typewriter
+IAndroidAccelerometerData
+\family default
+, while in the implementation are defined the methods described above:
 \end_layout
 
 \begin_layout Standard
@@ -10673,11 +11135,29 @@ status open
 
 \begin_layout Standard
 For each other sensor the implementation is the same, the only difference
- is the type of SensorData and the type of the instances list (obviously
- is the same of the AndroidSensor).
- For the SensorData type is possible to reference with the following table
- that realizes a match between the Sensor defined by Android, and the new
- AndroidSensor classess with the AndroidSensorData:
+ is the type of 
+\family typewriter
+SensorData
+\family default
+ and the type of the instances list (obviously is the same of the 
+\family typewriter
+AndroidSensor
+\family default
+).
+ For the 
+\family typewriter
+SensorData
+\family default
+ type is possible to reference with the following table that realizes a
+ match between the sensor type defined by Android, and the new 
+\family typewriter
+AndroidSensor
+\family default
+ classess with the 
+\family typewriter
+AndroidSensorData
+\family default
+:
 \end_layout
 
 \begin_layout Standard
@@ -11820,30 +12300,57 @@ AndroidProximityData
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 AndroidSensorFactory
 \end_layout
 
 \begin_layout Standard
-This class is defined in the main implementation package (it.unibo.android.sensorSu
-pport.implementation) and provides methods to obtain an instance of a particular
- AndroidSensor.
+This class is defined in the main implementation package (
+\family typewriter
+it.unibo.android.sensorSupport.implementation
+\family default
+) and provides methods to obtain an instance of a particular 
+\family typewriter
+AndroidSensor
+\family default
+.
  Developers can ask to the factory a specific sensor in two methods:
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-getInstance() passing the type of sensor as a parameter (with the delay,
- the observer and the SensorManager).
+
+\family typewriter
+getInstance()
+\family default
+ passing the type of sensor as a parameter (with the delay, the observer
+ and the SensorManager).
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-get[SENSOR]() where [SENSOR] is the name of the sensor.
- In this case developer must pass to the factory only the SensorManager
+
+\family typewriter
+get[SENSOR]()
+\family default
+ where 
+\family typewriter
+[SENSOR]
+\family default
+ is the name of the sensor.
+ In this case developer must pass to the factory only the 
+\family typewriter
+SensorManager
+\family default
  and the delay; there are two possibilities: developer can pass also the
  observer or not (the observer can be not necessary, for example if the
  application not constantly need notification of the update but only want
- to request SensorData in specific times).
+ to request 
+\family typewriter
+SensorData
+\family default
+ in specific times).
 \end_layout
 
 \begin_layout Standard
@@ -12507,64 +13014,21 @@ Last two methods are defined also for each other sensors.
 \end_layout
 
 \begin_layout Subsection
-How AndroidSensorSupport works
+How to use 
+\family typewriter
+AndroidSensorSupport
 \end_layout
 
 \begin_layout Standard
-AndroidSensorSupport provides a new layer between the application and the
- AndroidSensorFramework: now developers can insert the business logic tha
- needs sensors informations directly into an observer which is connected
- to the real sensor through the AndroidSensor class (that implemente the
- SensorEventListener and extends the Observable interface.
-\end_layout
-
-\begin_layout Standard
-The following figure shows how the AndroidSensorSupport works:
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-How Android Sensor Support works
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename img/AndroidSensorSupport.png
-	lyxscale 30
-	width 40page%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-How to use AndroidSensorSupport
-\end_layout
-
-\begin_layout Standard
-The AndroidSensorSupport layer, as mentioned, simplifies the sensors utilization
-, and provides to the developer methods to obtain the last updated SensorData
+The 
+\family typewriter
+AndroidSensorSupport
+\family default
+ layer, as mentioned, simplifies the sensors utilization, and provides to
+ the developer methods to obtain the last updated 
+\family typewriter
+SensorData
+\family default
  overcoming the constraint of wait the next sensor update or save values
  each time (it does this operation automatically and transparently).
 \end_layout
@@ -12578,13 +13042,26 @@ Request a Sensor
 \end_layout
 
 \begin_layout Standard
-To obtain an instance of a sensor developer have to ask it to the AndroidSensorF
-actory that provides to discriminate the type of sensor and then forwards
- the request to the specific AndroidSensor.
- There are three methods to obtain an AndroidSensor:
+To obtain an instance of a sensor developer have to ask it to the 
+\family typewriter
+AndroidSensorFactory
+\family default
+ that provides to discriminate the type of sensor and then forwards the
+ request to the specific 
+\family typewriter
+AndroidSensor
+\family default
+.
+ There are three methods to obtain an 
+\family typewriter
+AndroidSensor
+\family default
+:
 \end_layout
 
 \begin_layout Enumerate
+
+\family typewriter
 getSensor(SensorManager, SensorType, Delay, Observer)
 \end_layout
 
@@ -12676,15 +13153,32 @@ IAndroidAccelerometer accelerometer = (IAndroidAccelerometer)
 
 \end_deeper
 \begin_layout Enumerate
+
+\family typewriter
 get[SENSOR_TYPE](SensorManager, Delay, Observer)
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
-This method returns a specific type of AndroidSensor, then the cast is not
- necessary.
- Like the getSensor() method needs the sensor manager instance, the delay
- and the observer.
+This method returns a specific type of 
+\family typewriter
+AndroidSensor
+\family default
+ (specified in the method name e.g.
+ 
+\family typewriter
+getAccelerometer(...)
+\family default
+ or 
+\family typewriter
+getLightSensor(...)
+\family default
+), then the cast is not necessary.
+ Like the 
+\family typewriter
+getSensor(...)
+\family default
+ method needs the sensor manager instance, the delay and the observer.
 \begin_inset Newline newline
 \end_inset
 
@@ -12741,16 +13235,25 @@ AndroidLight light = AndroidSensorFactory.getLightSensor(manager, delay,
 
 \end_deeper
 \begin_layout Enumerate
+
+\family typewriter
 get[SENSOR_TYPE](SensorManager, Delay, Observer)
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
-Like the previous method, this returns a specific type of AndroidSensor
+Like the previous method, this returns a specific type of 
+\family typewriter
+AndroidSensor
+\family default
  too.
  This method doesn't need the observer, then the developer request a sensor
  that doesn't notifies changes but his data can be obtained calling the
- getData() method.
+ 
+\family typewriter
+getData()
+\family default
+ method.
 \begin_inset Newline newline
 \end_inset
 
@@ -12811,8 +13314,14 @@ Unregister sensor
 \end_layout
 
 \begin_layout Standard
-To unregister a sensor, for example when the application goes onPause()
- and is no longer necessary the sensor usage, developer can call the unregister
+To unregister a sensor, for example when the application goes 
+\family typewriter
+onPause()
+\family default
+ and is no longer necessary the sensor usage, developer can call the 
+\family typewriter
+unregister(...)
+\family default
  method that detaches the sensor from the sensor manager (that must be passed
  as parameter).
 \begin_inset Newline newline
@@ -12873,17 +13382,32 @@ Operation with SensorData
 \end_layout
 
 \begin_layout Standard
-There are two ways to do operations whit SensorData: 
+There are two ways to do operations whit 
+\family typewriter
+SensorData
+\family default
+: 
 \end_layout
 
 \begin_layout Enumerate
-Using the getData() method
+Using the 
+\family typewriter
+getData()
+\family default
+ method
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
-getData() returns the SensorData which contains all informations about the
- last update.
+
+\family typewriter
+getData()
+\family default
+ returns the 
+\family typewriter
+SensorData
+\family default
+ which contains all informations about the last update.
  After obtaining data, developers, can do what they wants with this:
 \begin_inset Newline newline
 \end_inset
@@ -13133,9 +13657,13 @@ Example
 
 \begin_layout Standard
 In this example are shown all previous methods used in an Android application
- that shows SensorData obtained from four different sensors (Accelerometer,
- Proximity, Light and Temperature), two of which have the same observer
- and the other do not have observers.
+ that shows 
+\family typewriter
+SensorData
+\family default
+ obtained from four different sensors (Accelerometer, Proximity, Light and
+ Temperature), two of which have the same observer and the other do not
+ have observers.
 \end_layout
 
 \begin_layout Standard
@@ -13969,19 +14497,46 @@ status open
 
 \begin_layout Standard
 In this project are presents, in the src directory two packagers: the first
- one contains the SensorObserver, while the second contains the ExampleActivity.
+ one contains the 
+\family typewriter
+SensorObserver
+\family default
+, while the second contains the 
+\family typewriter
+ExampleActivity
+\family default
+.
 \end_layout
 
 \begin_layout Paragraph*
+
+\family typewriter
 SensorObserver
 \end_layout
 
 \begin_layout Standard
-The SensorObserver implements the IObserver interface and realize the only
- one observer for each sensor.
- The constructor save the instance of the activity as IOutputView then,
- when the AndroidSensor notifies the update use this reference to update
- the GUI.
+The 
+\family typewriter
+SensorObserver
+\family default
+ implements the 
+\family typewriter
+IObserver
+\family default
+ interface and realize the only one observer for each sensor.
+ The constructor save the instance of the 
+\family typewriter
+Activity
+\family default
+ as 
+\family typewriter
+IOutputView
+\family default
+ then, when the 
+\family typewriter
+AndroidSensor
+\family default
+ notifies the update use this reference to update the GUI.
 \end_layout
 
 \begin_layout Standard
@@ -14224,16 +14779,44 @@ tTemperature)){
 \end_layout
 
 \begin_layout Paragraph*
+
+\family typewriter
 ExampleActivity
 \end_layout
 
 \begin_layout Standard
-The ExampleActivity implements IOutputView.
+The 
+\family typewriter
+ExampleActivity
+\family default
+ implements 
+\family typewriter
+IOutputView
+\family default
+.
  This interface provides methods to update the GUI, the only one used in
- this application is setOutput(msg).
- In this method is used the AndroidSensorDataUtils to rebuild the SensorData
- from a JSON string, then, according with the SensorData type the application
- updates the interested text field.
+ this application is 
+\family typewriter
+setOutput(msg)
+\family default
+.
+ In this method is used the 
+\family typewriter
+AndroidSensorDataUtils
+\family default
+ to rebuild the 
+\family typewriter
+SensorData
+\family default
+ from a 
+\family typewriter
+JSON
+\family default
+ string, then, according with the 
+\family typewriter
+SensorData
+\family default
+ type the application updates the interested text field.
 \begin_inset Newline newline
 \end_inset
 
@@ -14615,7 +15198,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset listings
-lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4"
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List, Context, Bundle, ArrayList, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4"
 inline false
 status open
 
@@ -14977,11 +15560,11 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset listings
-lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List,  Sensor, SensorManager, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4"
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,comment={[l]{//}},commentstyle={\color{darkgreen}\ttfamily},emph={int, boolean, int, float, double, List, Context, Bundle, ArrayList, Activity, View, AdapterView, OnItemSelectedListener, ArrayAdapter, Spinner, TextView},emphstyle={\color{blue}},identifierstyle={\color{black}},keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, int, long, this, new},keywordstyle={\color{magenta}\bfseries},language=Java,lastline=67,morecomment={[s]{/*}{*/}},ndkeywords={class, export, @Override},ndkeywordstyle={\color{gray}\bfseries},sensitive=false,stringstyle={\color{red}\ttfamily},tabsize=4"
 inline false
 status open
 
@@ -15202,8 +15785,12 @@ Conclusions
 \end_layout
 
 \begin_layout Standard
-In this paper is defined a new layer between Android Sensor Framework and
- the Android application that provides some useful features:
+In this paper is defined an Android sensor model that offers a layer between
+ Android Sensor Framework and the Android application.
+\end_layout
+
+\begin_layout Standard
+This layer provides some useful features:
 \end_layout
 
 \begin_layout Itemize
@@ -15212,22 +15799,57 @@ the new sensor classes are not only observer of the real sensor but also
 \end_layout
 
 \begin_layout Itemize
-the onSensorChange() method updates transparently the SensorData and notifies
- this update to all observers
+the 
+\family typewriter
+onSensorChange()
+\family default
+ method updates transparently the 
+\family typewriter
+SensorData
+\family default
+ and notifies this update to all observers
 \end_layout
 
 \begin_layout Itemize
-in introduced a SensorData model that contains all sensor data informations
- relative to the last update and provide a JSON and a Prolog representation
+in introduced a 
+\family typewriter
+SensorData
+\family default
+ model that contains all sensor data informations relative to the last update
+ and provide a 
+\family typewriter
+JSON
+\family default
+ and a Prolog representation
 \end_layout
 
 \begin_layout Itemize
-is defined an AndroidSensorFactory that returns a specific sensor and provides
- to registrate the AndroidSensor to the SensorManager
+is defined an 
+\family typewriter
+AndroidSensorFactory
+\family default
+ that returns a specific sensor and provides to registrate the 
+\family typewriter
+AndroidSensor
+\family default
+ to the 
+\family typewriter
+SensorManager
 \end_layout
 
 \begin_layout Itemize
-is defined an SensorDataUtils class that rebuild the SensorData from a JSON
+is defined an 
+\family typewriter
+SensorDataUtils
+\family default
+ class that rebuild the 
+\family typewriter
+SensorData
+\family default
+ from a 
+\family typewriter
+JSON
+\family default
  string representation
 \end_layout
 

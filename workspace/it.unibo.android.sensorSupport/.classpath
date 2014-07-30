@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="sensorData"/>
+	<classpathentry kind="src" path="sensorSupport"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/it.unibo.iss.libs/libs/uniboInterfaces.jar"/>
+	<classpathentry kind="lib" path="/it.unibo.iss.libs/libs/json/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="/it.unibo.iss.libs/libs/android19/android.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

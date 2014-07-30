@@ -1,3 +1,4 @@
+<h1 align="center">AndroidSensorSupport</h1>
 AndroidSensorSupport provides a model for sensors and sensor data that makes easier sensors request and data usage in Android applications.
 
 The model has been developed as project activity related to the <a href="http://www-natali.deis.unibo.it">Engineering of Software Systems</a> course at University of Bologna.

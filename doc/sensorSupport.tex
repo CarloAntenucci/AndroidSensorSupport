@@ -110,11 +110,12 @@
 \author{ALMA MATER STUDIORUM - UNIVERSITY OF BOLOGNA}
 
 
-\title{\vspace*{\fill}{\Huge{}Android Sensors Support}\\
+\title{\vspace*{\fill}{\Huge{}\href{http://carloantenucci.github.io/AndroidSensorSupport/}{Android Sensors Support}}\\
 {\Huge{}~}\\
 {\large{}Carlo Antenucci}\\
-{\large{}carlo.antenucci@studio.unibo.it}\\
-{\large{}carlo.antenucci@gmail.com} \vspace*{\fill}}
+{\small{}\href{mailto:carlo.antenucci@gmail.com}{carlo.antenucci@gmail.com}}\\
+{\small{}\href{mailto:carlo.antenucci@studio.unibo.it}{carlo.antenucci@studio.unibo.it}}\\
+ \vspace*{\fill}}
 
 \maketitle
 \cleardoublepage{}
@@ -154,16 +155,16 @@ The first part of this paper is based on the Adroid Developers sensors
 documentation\cite{androidDev}: introduces the Android sensor framework
 and explains how to use sensors.
 
-In the second part is introduced a new layer between Android Sensor
-Framework and the final application, developed as project activity
-related to the Engineering of Software System course. This layer simplifies
+In the second part is introduced a sensor and sensor data model that
+realizes a new layer between Android Sensor Framework and the final
+application. The model has been developed as project activity related
+to the Engineering of Software System course. This layer simplifies
 the sensor usage and allow a developer to ask to the sensor his data
 value (Android Sensor Framework only notify a change, but developers
 cannot request information to the sensor without save the last update
 in a variable).
 
-All source code are available at \href{https://github.com/CarloAntenucci/AndroidSensorSupport.git}{https://github.com/CarloAntenucci/AndroidSensorSupport.git}
-\newpage{}
+All source code and informations are available at \href{http://carloantenucci.github.io/AndroidSensorSupport/}{http://carloantenucci.github.io/AndroidSensorSupport/}\newpage{}
 \end{abstract}
 
 \section{Android Sensor Framework}
@@ -2829,7 +2830,9 @@ Observer o = new Observer(){
 \clearpage{}
 
 
-\subsubsection{Example}
+\subsubsection{Example%
+\footnote{This app is available on github in sensorSupport.example project%
+}}
 
 In this example are shown all previous methods used in an Android
 application that shows \texttt{SensorData} obtained from four different

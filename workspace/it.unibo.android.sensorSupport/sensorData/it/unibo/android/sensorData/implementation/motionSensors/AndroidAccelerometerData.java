@@ -26,7 +26,7 @@ public class AndroidAccelerometerData extends AndroidThreeAxisSensorData impleme
 
 	@Override
 	public float getAccelerationZ() {
-		return getX();
+		return getZ();
 	}
 
 	@Override

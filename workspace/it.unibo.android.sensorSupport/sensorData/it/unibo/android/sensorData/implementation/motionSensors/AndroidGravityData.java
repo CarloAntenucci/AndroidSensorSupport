@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.motionSensors.IAndroidGravityData;
 public class AndroidGravityData extends AndroidThreeAxisSensorData implements
 		IAndroidGravityData {
 
-	public AndroidGravityData(){
-		super();
-	}
-	
 	public AndroidGravityData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sensor Support Example</string>
-    <string name="title">Bridge Test</string>
+    <string name="title">SensorSupport Test</string>
     <string name="sensor1">Sensor 1</string>
     <string name="sensor2">Sensor 2</string>
     <string name="sensor3">Sensor 3</string>
     <string name="sensor4">Sensor 4</string>
     
     <string name="jsonRep">jsonRep</string>
-    <string name="speed"> Speed: 0 m/s</string>
-    <string name="displacement">Displacement: 0 m</string>
 
     <color name="white"> #FFFFFF </color>
     <color name="black"> #000000 </color>
     <color name="dark_grey"> #333333 </color>
-    <string name="arrow_contentDescription">arrow that indicates the shaking direction</string>
 </resources>

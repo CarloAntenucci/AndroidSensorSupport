@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.positionSensors.IAndroidMagneticFi
 public class AndroidMagneticFieldUncalibratedData extends AndroidThreeAxisSensorDataWithCorrection implements
 		IAndroidMagneticFieldUncalibratedData{
 
-	public AndroidMagneticFieldUncalibratedData(){
-		super();
-	}
-	
 	public AndroidMagneticFieldUncalibratedData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.motionSensors.IAndroidGyroscopeDat
 public class AndroidGyroscopeData extends AndroidThreeAxisSensorData implements
 		IAndroidGyroscopeData {
 
-	public AndroidGyroscopeData(){
-		super();
-	}
-	
 	public AndroidGyroscopeData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

@@ -51,7 +51,7 @@ public class AndroidRotationVector extends AndroidSensor implements
 	}
 	
 	private AndroidRotationVector(SensorManager manager, Sensor rotationVector, int delay){
-		sensorData = new AndroidMotionRotationVectorData();	
+		super(manager);
 		manager.registerListener(this, rotationVector, delay);
 	}
 	
@@ -67,10 +67,10 @@ public class AndroidRotationVector extends AndroidSensor implements
 	}
 
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 }

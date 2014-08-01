@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.environmentSensors.IAndroidTempera
 public class AndroidTemperatureData extends AndroidSingleValueSensorData implements
 		IAndroidTemperatureData {
 
-	public AndroidTemperatureData(){
-		super();
-	}
-	
 	public AndroidTemperatureData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

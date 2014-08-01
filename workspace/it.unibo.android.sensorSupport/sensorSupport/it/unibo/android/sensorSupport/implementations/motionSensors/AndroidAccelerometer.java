@@ -50,7 +50,7 @@ public class AndroidAccelerometer extends AndroidSensor implements
 	}
 	
 	private AndroidAccelerometer(SensorManager manager, Sensor accelerometer, int delay){
-		sensorData = new AndroidAccelerometerData();	
+		super(manager);
 		manager.registerListener(this, accelerometer, delay);
 	}
 	
@@ -66,11 +66,11 @@ public class AndroidAccelerometer extends AndroidSensor implements
 	}
 	
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 	
 }

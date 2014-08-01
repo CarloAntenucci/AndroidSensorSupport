@@ -51,7 +51,7 @@ public class AndroidSignificantMotion extends AndroidSensor implements
 	}
 	
 	private AndroidSignificantMotion(SensorManager manager, Sensor significantMotion, int delay){
-		sensorData = new AndroidDetectionSensorData();	
+		super(manager);
 		manager.registerListener(this, significantMotion, delay);
 	}
 	
@@ -67,10 +67,10 @@ public class AndroidSignificantMotion extends AndroidSensor implements
 	}
 
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 }

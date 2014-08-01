@@ -14,7 +14,7 @@ public interface IAndroidSensor extends SensorEventListener, IObserver, IObserva
 	 * This method deletes observers and unregister the AndroidSensor.
 	 * @param manager the SensorManager instance
 	 */
-	public void unregister(SensorManager manager);
+	public void unregister();
 	/**
 	 * Get method that
 	 * @return an instance of AndroidSensorData (according to the sensor)

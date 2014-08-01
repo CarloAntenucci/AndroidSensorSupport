@@ -55,7 +55,7 @@ public class AndroidPressure extends AndroidSensor implements IAndroidPressure {
 	
 	
 	private AndroidPressure(SensorManager manager, Sensor proximity, int delay){
-			sensorData = new AndroidPressureData();
+			super(manager);
 			manager.registerListener(this, proximity, delay);
 	}
 	
@@ -66,11 +66,11 @@ public class AndroidPressure extends AndroidSensor implements IAndroidPressure {
 	}
 	
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 	
 }

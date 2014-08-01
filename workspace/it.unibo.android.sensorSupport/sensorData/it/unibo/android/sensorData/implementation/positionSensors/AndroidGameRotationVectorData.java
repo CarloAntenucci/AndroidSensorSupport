@@ -7,10 +7,6 @@ public class AndroidGameRotationVectorData extends AndroidThreeAxisSensorData im
 		IAndroidPositionRotationVectorData {
 
 	
-	public AndroidGameRotationVectorData(){
-		super();
-	}
-	
 	public AndroidGameRotationVectorData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

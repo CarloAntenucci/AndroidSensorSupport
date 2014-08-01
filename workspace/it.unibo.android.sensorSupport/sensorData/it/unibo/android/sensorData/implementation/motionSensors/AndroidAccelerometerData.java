@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.motionSensors.IAndroidAcceleromete
 public class AndroidAccelerometerData extends AndroidThreeAxisSensorData implements
 		IAndroidAccelerometerData {
 
-	public AndroidAccelerometerData(){
-		super();
-	}
-	
 	public AndroidAccelerometerData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

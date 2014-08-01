@@ -14,9 +14,10 @@ import it.unibo.android.sensorData.interfaces.IAndroidSensorData;
 public abstract class AndroidSensor extends Observable implements IAndroidSensor {
 	
 	protected static IAndroidSensorData sensorData;
+	protected SensorManager myManager;
 	
-	public AndroidSensor(){
-		sensorData = new AndroidSensorData();
+	public AndroidSensor(SensorManager manager){
+		myManager = manager;
 	}
 	
 	@Override
@@ -48,9 +49,9 @@ public abstract class AndroidSensor extends Observable implements IAndroidSensor
 	}
 
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		this.deleteObservers();
-		manager.unregisterListener(this);
+		myManager.unregisterListener(this);
 	}
 	
 	@Override

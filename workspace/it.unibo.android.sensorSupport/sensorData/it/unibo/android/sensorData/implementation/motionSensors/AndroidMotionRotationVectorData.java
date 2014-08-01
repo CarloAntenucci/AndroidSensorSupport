@@ -11,9 +11,6 @@ public class AndroidMotionRotationVectorData extends AndroidSensorData implement
 	protected float componentZ;
 	protected float componentS;
 
-	public AndroidMotionRotationVectorData(){
-		super();
-	}
 	
 	public AndroidMotionRotationVectorData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);

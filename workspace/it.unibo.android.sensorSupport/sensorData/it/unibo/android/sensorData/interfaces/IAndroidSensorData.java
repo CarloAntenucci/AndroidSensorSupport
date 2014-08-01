@@ -5,9 +5,8 @@ package it.unibo.android.sensorData.interfaces;
 /**
 
  */
-import it.unibo.is.interfaces.IObservable;
 
-public interface IAndroidSensorData extends IObservable {
+public interface IAndroidSensorData {
 	/**
 	 * Get method that
 	 * @return the SensorData's name
@@ -17,7 +16,7 @@ public interface IAndroidSensorData extends IObservable {
 	 * Get method that
 	 * @return the float array of sensor's values
 	 */
-	public float[] getValues();
+	public float[] giveMeValues();
 	/**
 	 * Get method that
 	 * @return the SensorData prolog representation (a string)

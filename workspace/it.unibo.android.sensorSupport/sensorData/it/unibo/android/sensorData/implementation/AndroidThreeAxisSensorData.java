@@ -7,10 +7,6 @@ public class AndroidThreeAxisSensorData extends AndroidSensorData implements
 
 	float x, y, z;
 	
-	public AndroidThreeAxisSensorData(){
-		super();
-	}
-	
 	public AndroidThreeAxisSensorData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 		x = values[0];
@@ -35,14 +31,9 @@ public class AndroidThreeAxisSensorData extends AndroidSensorData implements
 	
 	@Override
 	public String getPrologRep(){
-		if(initialized()){
 			String rep = getName()+"(x("+getX()+"),y("+getY()+"),z("+getZ()+"),";
 			rep += "timestamp("+getTimestamp()+"),accuracy("+getAccuracy()+"))";
 			return rep;
-		}
-		else
-			return "Not yet initialized";
 	}
-	
 
 }

@@ -55,7 +55,7 @@ public class AndroidAmbientTemperature extends AndroidSensor implements IAndroid
 	
 	
 	private AndroidAmbientTemperature(SensorManager manager, Sensor proximity, int delay){
-			sensorData = new AndroidTemperatureData();
+			super(manager);
 			manager.registerListener(this, proximity, delay);
 	}
 	
@@ -66,10 +66,10 @@ public class AndroidAmbientTemperature extends AndroidSensor implements IAndroid
 	}
 	
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 }

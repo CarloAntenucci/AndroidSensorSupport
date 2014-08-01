@@ -11,10 +11,6 @@ public class AndroidOrientationData extends AndroidThreeAxisSensorData implement
 		IAndroidOrientationData {
 
 	
-	public AndroidOrientationData(){
-		super();
-	}
-	
 	public AndroidOrientationData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

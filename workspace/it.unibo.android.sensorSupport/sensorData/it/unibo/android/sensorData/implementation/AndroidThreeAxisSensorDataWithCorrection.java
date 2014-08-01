@@ -7,10 +7,6 @@ public class AndroidThreeAxisSensorDataWithCorrection extends AndroidThreeAxisSe
 
 	float correctionX, correctionY, correctionZ;
 	
-	public AndroidThreeAxisSensorDataWithCorrection(){
-		super();
-	}
-	
 	public AndroidThreeAxisSensorDataWithCorrection(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 		correctionX = values[3];
@@ -35,14 +31,11 @@ public class AndroidThreeAxisSensorDataWithCorrection extends AndroidThreeAxisSe
 	
 	@Override
 	public String getPrologRep(){
-		if(initialized()){
-			String rep = getName()+"(x("+getX()+"),y("+getY()+"),z("+getZ()+"),";
-			rep += "correctionX("+getCorrectionX()+"),correctionY("+getCorrectionY()+"),correctionZ("+getCorrectionZ()+"),";
-			rep += "timestamp("+getTimestamp()+"),accuracy("+getAccuracy()+"))";
-			return rep;
-		}
-		else
-			return "Not yet initialized";	
+            String rep = getName()+"(x("+getX()+"),y("+getY()+"),z("+getZ()+"),";
+            rep += "correctionX("+getCorrectionX()+"),correctionY("+getCorrectionY()+"),";
+            rep += "correctionZ("+getCorrectionZ()+"),timestamp("+getTimestamp()+"),";
+            rep += "accuracy("+getAccuracy()+"))";
+            return rep;
 	}
 	
 

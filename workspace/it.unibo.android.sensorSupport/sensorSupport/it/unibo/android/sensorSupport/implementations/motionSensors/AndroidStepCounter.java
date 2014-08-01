@@ -49,7 +49,7 @@ public class AndroidStepCounter extends AndroidSensor implements IAndroidStepCou
 	}
 
 	private AndroidStepCounter(SensorManager manager, Sensor stepCounter, int delay){
-		sensorData = new AndroidStepCounterData();
+		super(manager);
 		manager.registerListener(this, stepCounter, delay);
 	}
 
@@ -65,10 +65,10 @@ public class AndroidStepCounter extends AndroidSensor implements IAndroidStepCou
 	}
 
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 }

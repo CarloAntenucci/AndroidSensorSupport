@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.motionSensors.IAndroidGyroscopeUnc
 public class AndroidGyroscopeUncalibratedData extends AndroidThreeAxisSensorDataWithCorrection implements
 		IAndroidGyroscopeUncalibratedData{
 
-	public AndroidGyroscopeUncalibratedData(){
-		super();
-	}
-	
 	public AndroidGyroscopeUncalibratedData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

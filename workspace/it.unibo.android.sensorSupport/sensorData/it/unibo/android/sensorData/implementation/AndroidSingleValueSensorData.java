@@ -7,10 +7,6 @@ public class AndroidSingleValueSensorData extends AndroidSensorData implements
 
 	protected float value;
 	
-	public AndroidSingleValueSensorData(){
-		super();
-	}
-	
 	public AndroidSingleValueSensorData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 		value = values[0];
@@ -23,13 +19,8 @@ public class AndroidSingleValueSensorData extends AndroidSensorData implements
 
 	@Override
 	public String getPrologRep(){
-		if(initialized()){
 			String rep = getName()+"(value("+getValue()+"),";
 			rep += "timestamp("+getTimestamp()+"),accuracy("+getAccuracy()+"))";
 			return rep;
-		}
-		else
-			return "Not yet initialized";
 	}
-
 }

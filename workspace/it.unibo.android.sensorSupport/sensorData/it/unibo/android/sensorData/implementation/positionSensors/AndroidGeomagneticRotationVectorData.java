@@ -7,10 +7,6 @@ public class AndroidGeomagneticRotationVectorData extends AndroidThreeAxisSensor
 		IAndroidPositionRotationVectorData {
 
 	
-	public AndroidGeomagneticRotationVectorData(){
-		super();
-	}
-	
 	public AndroidGeomagneticRotationVectorData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

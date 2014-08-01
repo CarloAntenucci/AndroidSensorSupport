@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.environmentSensors.IAndroidPressur
 public class AndroidPressureData extends AndroidSingleValueSensorData implements
 		IAndroidPressureData {
 
-	public AndroidPressureData(){
-		super();
-	}
-	
 	public AndroidPressureData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

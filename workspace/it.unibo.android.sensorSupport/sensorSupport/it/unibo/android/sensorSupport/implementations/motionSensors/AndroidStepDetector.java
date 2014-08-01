@@ -51,7 +51,7 @@ public class AndroidStepDetector extends AndroidSensor implements
 	}
 	
 	private AndroidStepDetector(SensorManager manager, Sensor stepDetector, int delay){
-		sensorData = new AndroidDetectionSensorData();	
+		super(manager);
 		manager.registerListener(this, stepDetector, delay);
 	}
 	
@@ -67,10 +67,10 @@ public class AndroidStepDetector extends AndroidSensor implements
 	}
 
 	@Override
-	public void unregister(SensorManager manager){
+	public void unregister(){
 		for(int i = 0; i < instances.length; i++)
 			if(this.equals(instances[i]))
 				instances[i] = null;
-		super.unregister(manager);
+		super.unregister();
 	}
 }

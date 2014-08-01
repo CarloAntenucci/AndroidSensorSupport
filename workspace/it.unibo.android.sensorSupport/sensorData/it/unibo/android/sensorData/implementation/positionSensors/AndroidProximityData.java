@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.positionSensors.IAndroidProximityD
 public class AndroidProximityData extends AndroidSingleValueSensorData implements
 		IAndroidProximityData {
 
-	public AndroidProximityData(){
-		super();
-	}
-	
 	public AndroidProximityData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

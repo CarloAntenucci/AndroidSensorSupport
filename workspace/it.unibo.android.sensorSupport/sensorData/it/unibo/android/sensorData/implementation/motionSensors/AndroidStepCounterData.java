@@ -7,10 +7,6 @@ public class AndroidStepCounterData extends AndroidSingleValueSensorData impleme
 		IAndroidStepCounterData {
 
 	
-	public AndroidStepCounterData(){
-		super();
-	}
-	
 	public AndroidStepCounterData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

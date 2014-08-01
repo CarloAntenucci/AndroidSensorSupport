@@ -7,10 +7,6 @@ public class AndroidMagneticFieldData extends AndroidThreeAxisSensorData impleme
 		IAndroidMagneticFieldData {
 
 	
-	public AndroidMagneticFieldData(){
-		super();
-	}
-	
 	public AndroidMagneticFieldData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

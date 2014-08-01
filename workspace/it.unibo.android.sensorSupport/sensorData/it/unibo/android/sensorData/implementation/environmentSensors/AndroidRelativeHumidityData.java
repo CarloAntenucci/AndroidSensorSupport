@@ -6,10 +6,6 @@ import it.unibo.android.sensorData.interfaces.environmentSensors.IAndroidRelativ
 public class AndroidRelativeHumidityData extends AndroidSingleValueSensorData implements
 		IAndroidRelativeHumidityData {
 
-	public AndroidRelativeHumidityData(){
-		super();
-	}
-	
 	public AndroidRelativeHumidityData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 	}

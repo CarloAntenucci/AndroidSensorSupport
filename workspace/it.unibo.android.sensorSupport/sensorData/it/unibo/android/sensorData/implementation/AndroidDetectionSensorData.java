@@ -10,10 +10,6 @@ public class AndroidDetectionSensorData extends AndroidSensorData implements
 
 	private long detectionTime;
 	
-	public AndroidDetectionSensorData(){
-		super();
-	}
-	
 	public AndroidDetectionSensorData(float[] values, int accuracy, long timestamp) {
 		super(values, accuracy, timestamp);
 		detectionTime = System.currentTimeMillis();
@@ -30,18 +26,14 @@ public class AndroidDetectionSensorData extends AndroidSensorData implements
 	 * This method, IN THIS CLASS, returns a null value because this type of sensors 
 	 * doesn't have values but only notifies a detection, so may return an empty array.
 	 */
-	public float[] getValues() {
+	public float[] giveMeValues() {
 		return null;
 	}
 
 	@Override
 	public String getPrologRep(){
-		if(initialized()){
 			String rep = getName()+"(timestamp("+getTimestamp()+"),accuracy("+getAccuracy()+"))";
 			return rep;
-		}
-		else
-			return "Not yet initialized";
 	}
 
 	@Override

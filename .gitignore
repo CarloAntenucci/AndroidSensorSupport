@@ -29,5 +29,6 @@ hs_err_pid*
 [Tt]humbs.db
 *.DS_Store
 
+#METADATA
 */*.metadata
-
+*/.metadata
